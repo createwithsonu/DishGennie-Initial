@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | DishGennie</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --text: #f0edea;
+            --background: #120d09;
+            --primary: #debd9d;
+            --secondary: #8c541c;
+            --accent: #eb8c2d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            --radius: 12px;
+            --card-bg: #1c1611;
+            --border: rgba(140, 84, 28, 0.3);
+            --light-bg: #241c15;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: rgba(18, 13, 9, 0.95);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .navbar-brand i {
+            color: var(--accent);
+        }
+        
+        .nav-link {
+            color: var(--text) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 30px;
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary) !important;
+            background-color: rgba(222, 189, 157, 0.1);
+        }
+        
+        /* Hero Section */
+        .about-hero {
+            padding: 120px 0 60px;
+            background: linear-gradient(rgba(18, 13, 9, 0.9), rgba(18, 13, 9, 0.95));
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(240, 237, 234, 0.9);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            padding: 60px 0;
+            background-color: var(--light-bg);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            color: var(--primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        /* About Content */
+        .about-content {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-size: 2.8rem;
+            font-weight: 800;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            margin: 15px auto 30px;
+            border-radius: 2px;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: rgba(240, 237, 234, 0.8);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 3.5rem;
+        }
+        
+        .about-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+        
+        .about-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: rgba(235, 140, 45, 0.5);
+        }
+        
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--background);
+            font-size: 1.8rem;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        /* Team Section */
+        .team-section {
+            padding: 80px 0;
+            background-color: var(--light-bg);
+        }
+        
+        .team-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent);
+        }
+        
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+        
+        .team-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .team-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            border: 5px solid rgba(235, 140, 45, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--background);
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+        
+        .team-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .team-role {
+            color: var(--accent);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .team-bio {
+            color: rgba(240, 237, 234, 0.8);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .team-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .skill-tag {
+            background: rgba(235, 140, 45, 0.1);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .team-social {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(140, 84, 28, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .social-link:hover {
+            background: var(--accent);
+            color: var(--background);
+            transform: translateY(-3px);
+        }
+        
+        /* Values Section */
+        .values-section {
+            padding: 80px 0;
+        }
+        
+        .value-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            height: 100%;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: rgba(235, 140, 45, 0.5);
+        }
+        
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(235, 140, 45, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--accent);
+            font-size: 2rem;
+        }
+        
+        .value-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        /* Timeline Section */
+        .timeline-section {
+            padding: 80px 0;
+            background-color: var(--light-bg);
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent), var(--secondary));
+        }
+        
+        .timeline-item {
+            margin-bottom: 3rem;
+            position: relative;
+            width: 50%;
+            padding-right: 3rem;
+        }
+        
+        .timeline-item:nth-child(even) {
+            margin-left: 50%;
+            padding-right: 0;
+            padding-left: 3rem;
+        }
+        
+        .timeline-content {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+        
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content::before {
+            right: auto;
+            left: -10px;
+        }
+        
+        .timeline-year {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-title {
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 0;
+            background: linear-gradient(rgba(18, 13, 9, 0.9), rgba(18, 13, 9, 0.95));
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border: none;
+            color: var(--background);
+            padding: 0.9rem 2.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(235, 140, 45, 0.3);
+            color: var(--background);
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--card-bg);
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-brand i {
+            color: var(--accent);
+        }
+        
+        .footer-description {
+            color: rgba(240, 237, 234, 0.7);
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-heading {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(240, 237, 234, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background-color: rgba(140, 84, 28, 0.2);
+            color: var(--accent);
+            border-radius: 50%;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background-color: var(--accent);
+            color: var(--background);
+            transform: translateY(-5px);
+        }
+        
+        .footer-bottom {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: rgba(240, 237, 234, 0.6);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 4rem;
+                padding-right: 0;
+            }
+            
+            .timeline-item:nth-child(even) {
+                margin-left: 0;
+                padding-left: 4rem;
+            }
+            
+            .timeline-content::before {
+                left: -10px;
+                right: auto;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 1.9rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 2.5rem;
+            }
+            
+            .about-card, .team-card, .value-card, .timeline-content {
+                padding: 1.5rem;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem;
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 1.9rem;
+                margin-bottom: 1rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
+                margin-bottom: 1rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .about-hero {
+                padding: 80px 0 40px;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item, .timeline-item:nth-child(even) {
+                padding-left: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-utensils"></i> DishGennie
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/about/">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/service/">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contactus/">Contact</a>
+                    </li>
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <a class="btn btn-primary" href="/signup/">Get Started</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <h1 class="hero-title">Our Story & Vision</h1>
+            <p class="hero-subtitle">
+                We're a passionate team of four developers on a mission to revolutionize meal planning through AI-powered technology, making cooking enjoyable and accessible for everyone.
+            </p>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number">10K+</div>
+                    <div class="stat-label">Happy Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Recipes Generated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Team Members</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Satisfaction Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Mission Section -->
+    <section class="about-content">
+        <div class="container">
+            <h2 class="section-title">Our Mission & Vision</h2>
+            <p class="section-subtitle">
+                We believe that everyone deserves to enjoy cooking and eating healthy, delicious meals without the stress of planning and preparation.
+            </p>
+            
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="about-card">
+                        <div class="card-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3 class="card-title">Our Mission</h3>
+                        <p style="color: rgba(240, 237, 234, 0.8); font-size: 1.05rem;">
+                            To simplify meal planning and cooking through intelligent AI technology, helping people save time, reduce food waste, and enjoy healthier, more delicious meals every day. We aim to make cooking accessible and enjoyable for everyone, from beginners to experienced chefs.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="about-card">
+                        <div class="card-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3 class="card-title">Our Vision</h3>
+                        <p style="color: rgba(240, 237, 234, 0.8); font-size: 1.05rem;">
+                            To become the world's most trusted AI-powered culinary companion, transforming how people approach meal planning, cooking, and nutrition. We envision a future where everyone has access to personalized, healthy meal solutions that fit their lifestyle, budget, and dietary needs.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="about-card mt-4">
+                <div class="card-icon" style="margin: 0 auto 1.5rem;">
+                    <i class="fas fa-history"></i>
+                </div>
+                <h3 class="card-title text-center">Our Story</h3>
+                <p style="color: rgba(240, 237, 234, 0.8); font-size: 1.05rem; text-align: center;">
+                    DishGennie was born from our own struggles with meal planning and cooking. As busy developers, we found ourselves eating the same meals or ordering takeout too often. We realized there had to be a better way - an intelligent system that could suggest recipes based on what's in your pantry, your dietary preferences, and your cooking skills. What started as a personal project has grown into a platform serving thousands of users who share our passion for good food made simple.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="section-title">Meet Our Team</h2>
+            <p class="section-subtitle">
+                We're a diverse team of passionate developers, designers, and food enthusiasts united by our love for technology and great food.
+            </p>
+            
+            <div class="row g-4">
+                <!-- Team Member 1: Aditya Dubey -->
+                <div class="col-lg-6">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <div class="avatar-placeholder">A</div>
+                        </div>
+                        <h3 class="team-name">Aditya Dubey</h3>
+                        <p class="team-role">Co-Founder & Lead Developer</p>
+                        <p class="team-bio">
+                            Full-stack developer with 5+ years of experience in AI and web technologies. Passionate about creating intuitive user experiences and scalable backend systems. Leads the technical architecture and AI implementation.
+                        </p>
+                        <div class="team-skills">
+                            <span class="skill-tag">AI/ML</span>
+                            <span class="skill-tag">Backend</span>
+                            <span class="skill-tag">System Design</span>
+                            <span class="skill-tag">Python</span>
+                        </div>
+                        <div class="team-social">
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team Member 2: Alok Vikram -->
+                <div class="col-lg-6">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <div class="avatar-placeholder">A</div>
+                        </div>
+                        <h3 class="team-name">Alok Vikram</h3>
+                        <p class="team-role">Co-Founder & Frontend Lead</p>
+                        <p class="team-bio">
+                            Frontend specialist with expertise in modern JavaScript frameworks and responsive design. Focuses on creating beautiful, performant user interfaces that make complex features feel simple and intuitive.
+                        </p>
+                        <div class="team-skills">
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">UI/UX</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">CSS</span>
+                        </div>
+                        <div class="team-social">
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team Member 3: Ashutosh Shakya -->
+                <div class="col-lg-6">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <div class="avatar-placeholder">A</div>
+                        </div>
+                        <h3 class="team-name">Ashutosh Shakya</h3>
+                        <p class="team-role">Backend Developer & DevOps</p>
+                        <p class="team-bio">
+                            Backend engineer specializing in scalable infrastructure and database design. Manages server architecture, API development, and ensures system reliability and performance under high loads.
+                        </p>
+                        <div class="team-skills">
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">DevOps</span>
+                            <span class="skill-tag">Database</span>
+                            <span class="skill-tag">AWS</span>
+                        </div>
+                        <div class="team-social">
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-stack-overflow"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Team Member 4: Sonu Patel -->
+                <div class="col-lg-6">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <div class="avatar-placeholder">S</div>
+                        </div>
+                        <h3 class="team-name">Sonu Patel</h3>
+                        <p class="team-role">Product Designer & UX Researcher</p>
+                        <p class="team-bio">
+                            Creative designer with a focus on user-centered design and research. Bridges the gap between user needs and technical implementation through thoughtful design, prototyping, and user testing.
+                        </p>
+                        <div class="team-skills">
+                            <span class="skill-tag">UI/UX</span>
+                            <span class="skill-tag">Research</span>
+                            <span class="skill-tag">Prototyping</span>
+                            <span class="skill-tag">Figma</span>
+                        </div>
+                        <div class="team-social">
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-behance"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-medium"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Values -->
+    <section class="values-section">
+        <div class="container">
+            <h2 class="section-title">Our Core Values</h2>
+            <p class="section-subtitle">
+                These principles guide everything we do at DishGennie, from product development to customer support.
+            </p>
+            
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <h3 class="value-title">User-Centric</h3>
+                        <p style="color: rgba(240, 237, 234, 0.8);">
+                            We prioritize user needs above all. Every feature is designed to solve real problems and make cooking easier, more enjoyable, and more efficient.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="value-title">Innovation</h3>
+                        <p style="color: rgba(240, 237, 234, 0.8);">
+                            We constantly explore new technologies and approaches to improve meal planning. Our AI algorithms evolve based on user feedback and culinary trends.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3 class="value-title">Passion for Food</h3>
+                        <p style="color: rgba(240, 237, 234, 0.8);">
+                            We genuinely love food and believe that cooking should be a joyful, creative experience rather than a chore. This passion drives our product development.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section">
+        <div class="container">
+            <h2 class="section-title">Our Journey</h2>
+            <p class="section-subtitle">
+                From concept to platform, here's how DishGennie evolved over time.
+            </p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2023</div>
+                        <h4 class="timeline-title">The Idea</h4>
+                        <p style="color: rgba(240, 237, 234, 0.8);">
+                            Four developers with a shared frustration about meal planning come together to build a solution. Initial concept and prototype development begins.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">Early 2024</div>
+                        <h4 class="timeline-title">MVP Launch</h4>
+                        <p style="color: rgba(240, 237, 234, 0.8);">
+                            First version of DishGennie launches with basic AI recipe suggestions. Initial user feedback shapes future development direction.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">Mid 2024</div>
+                        <h4 class="timeline-title">Platform Expansion</h4>
+                        <p style="color: rgba(240, 237, 234, 0.8);">
+                            Added meal planning, nutrition tracking, and shopping list features. User base grows to over 5,000 active users.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2025</div>
+                        <h4 class="timeline-title">Today & Beyond</h4>
+                        <p style="color: rgba(240, 237, 234, 0.8);">
+                            Serving 10,000+ users with advanced AI features. Continuously improving algorithms and expanding to mobile platforms.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="section-title">Join Our Culinary Revolution</h2>
+            <p class="section-subtitle">
+                Ready to transform your cooking experience? Join thousands of happy users who've made DishGennie their go-to meal planning companion.
+            </p>
+            <div class="mt-4">
+                <a href="/signup/" class="btn-primary me-3">
+                    <i class="fas fa-rocket"></i> Start Free Trial
+                </a>
+                <a href="/contactus/" class="btn-primary" style="background: transparent; border: 2px solid var(--accent); color: var(--accent);">
+                    <i class="fas fa-comments"></i> Contact Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand">
+                        <i class="fas fa-utensils"></i> DishGennie
+                    </div>
+                    <p class="footer-description">
+                        Your personal AI-powered meal planning companion. Making cooking fun, easy, and personalized for everyone.
+                    </p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="footer-heading">Company</h5>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about/">About Us</a></li>
+                        <li><a href="/service/">Services</a></li>
+                        <li><a href="/contactus/">Contact</a></li>
+                        <li><a href="/careers/">Careers</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-heading">Features</h5>
+                    <ul class="footer-links">
+                        <li><a href="/meal-planner/">Meal Planner</a></li>
+                        <li><a href="/recipes/">Recipe Generator</a></li>
+                        <li><a href="/nutrition/">Nutrition Tracker</a></li>
+                        <li><a href="/shopping/">Shopping Lists</a></li>
+                        <li><a href="/academy/">Cooking Academy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-heading">Resources</h5>
+                    <ul class="footer-links">
+                        <li><a href="/blog/">Blog</a></li>
+                        <li><a href="/help/">Help Center</a></li>
+                        <li><a href="/privacy/">Privacy Policy</a></li>
+                        <li><a href="/terms/">Terms of Service</a></li>
+                        <li><a href="/cookies/">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 DishGennie. All Rights Reserved. Made with <i class="fas fa-heart" style="color: var(--accent);"></i> for food lovers everywhere.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add simple animations on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add animation class to stats cards on load
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100 * index);
+                }, 500);
+            });
+            
+            // Add hover effect to team cards
+            const teamCards = document.querySelectorAll('.team-card');
+            teamCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.querySelector('.team-avatar').style.transform = 'scale(1.1)';
+                    this.querySelector('.team-avatar').style.transition = 'transform 0.3s ease';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.querySelector('.team-avatar').style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DishGennie - AI Recipe Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --text: #f0edea;
+            --background: #120d09;
+            --primary: #debd9d;
+            --secondary: #8c541c;
+            --accent: #eb8c2d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            --radius: 10px;
+            --card-bg: #1c1611;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--background);
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 28px;
+            background-color: var(--accent);
+            color: var(--background);
+            border-radius: 30px;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            color: #120d09;
+            background-color: var(--text);
+            transform: translateY(-3px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent);
+            color: var(--background);
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--text);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 3px;
+            background-color: var(--accent);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title p {
+            color: var(--primary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            bottom: -5px;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .logo-img {
+            scale: 1.3;
+            padding: 0%;
+            margin-top: 10px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(18, 13, 9, 0.85), rgba(18, 13, 9, 0.9)),
+                url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+
+            background-size: cover;
+            background-position: bottom;
+            /* shows more bottom part */
+
+            color: var(--text);
+            padding: 180px 0 180px;
+            /* increased bottom height */
+            text-align: center;
+        }
+
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            animation: fadeInUp 1s ease 0.2s forwards;
+            opacity: 0;
+            color: var(--primary);
+        }
+
+        .hero-btns {
+            animation: fadeInUp 1s ease 0.4s forwards;
+            opacity: 0;
+        }
+
+        .hero-btns .btn {
+            margin: 0 10px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Procedure Section */
+        .procedure {
+            background-color: var(--background);
+        }
+
+        .steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            background-color: var(--card-bg);
+        }
+
+        .step:hover {
+            transform: translateY(-10px);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            color: var(--text);
+        }
+
+        .step h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+
+        .step p {
+            color: var(--primary);
+        }
+
+        /* Plans Section */
+        .plans {
+            background-color: var(--card-bg);
+        }
+
+        .pricing-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .pricing-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 350px;
+            background-color: var(--background);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 40px 30px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--secondary);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+        }
+
+        .pricing-card.popular {
+            border: 2px solid var(--accent);
+            transform: scale(1.05);
+        }
+
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--accent);
+            color: var(--background);
+            padding: 5px 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: 0 0 0 10px;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .plan-price span {
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        .plan-features {
+            margin: 30px 0;
+        }
+
+        .plan-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--secondary);
+            color: var(--primary);
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background-color: var(--background);
+        }
+
+        .testimonial-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 350px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            transition: var(--transition);
+            border: 1px solid var(--secondary);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .user-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--text);
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .user-role {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        .testimonial-text {
+            color: var(--primary);
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .rating {
+            color: var(--accent);
+        }
+
+        /* Features Section */
+        .features {
+            background-color: var(--card-bg);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--background);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 1px solid var(--secondary);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background-color: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: var(--text);
+        }
+
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .feature-card p {
+            color: var(--primary);
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: var(--text);
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta p {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            color: var(--text);
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+        }
+
+        .footer-col h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent);
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-col p {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background-color: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--secondary);
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        /* Mobile Navigation (Hamburger Menu) */
+        @media (max-width: 768px) {
+
+            .nav-links {
+                position: absolute;
+                top: 80px;
+                right: 0;
+                width: 100%;
+                background-color: var(--card-bg);
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                box-shadow: var(--shadow);
+                border-top: 1px solid var(--secondary);
+                display: none;
+                z-index: 999;
+            }
+
+            .nav-links li {
+                margin: 15px 0;
+            }
+
+            .mobile-menu {
+                display: block;
+                color: var(--text);
+                font-size: 1.8rem;
+            }
+
+            /* When menu active */
+            .nav-links.active {
+                display: flex;
+                animation: slideDown 0.3s ease forwards;
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <img class="logo-img" src="/static/images/Logo.png" alt="logo" style="width:80px; height:100px;">
+                    DishGennie
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#procedure">How It Works</a></li>
+                    <li><a href="#plans">Pricing</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="/signin/" class="btn">Get Started</a></li>
+                </ul>
+                <div class="mobile-menu"><i class="fas fa-bars"></i></div>
+
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Transform Ingredients into Culinary Masterpieces</h1>
+            <p>DishGennie is your AI-powered kitchen assistant that creates personalized recipes based on your
+                ingredients, dietary needs, and preferences.</p>
+            <div class="hero-btns">
+                <a href="#" class="btn">Generate Recipe</a>
+                <a href="#" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Procedure Section -->
+    <section class="section procedure" id="procedure">
+        <div class="container">
+            <div class="section-title">
+                <h2>How DishGennie Works</h2>
+                <p>Create delicious recipes in just four simple steps</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    <h3>Enter Your Ingredients</h3>
+                    <p>Tell us what ingredients you have on hand, and our AI will work its magic.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <h3>Set Preferences</h3>
+                    <p>Specify dietary restrictions, cuisine preferences, and cooking time.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI Generates Recipes</h3>
+                    <p>Our advanced algorithm creates personalized recipes just for you.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Cook & Enjoy</h3>
+                    <p>Follow the step-by-step instructions and enjoy your delicious meal.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plans Section -->
+    <section class="section plans" id="plans">
+        <div class="container">
+            <div class="section-title">
+                <h2>Choose Your Plan</h2>
+                <p>Select the plan that fits your cooking needs</p>
+            </div>
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <h3 class="plan-name">Basic</h3>
+                    <div class="plan-price">$0<span>/month</span></div>
+                    <ul class="plan-features">
+                        <li>5 Recipe Generations per month</li>
+                        <li>Basic Dietary Filters</li>
+                        <li>Standard Recipe Quality</li>
+                        <li>Community Support</li>
+                    </ul>
+                    <a href="#" class="btn">Get Started</a>
+                </div>
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3 class="plan-name">Pro</h3>
+                    <div class="plan-price">$9<span>/month</span></div>
+                    <ul class="plan-features">
+                        <li>Unlimited Recipe Generations</li>
+                        <li>Advanced Dietary & Allergy Filters</li>
+                        <li>High-Quality Recipes</li>
+                        <li>Save & Organize Recipes</li>
+                        <li>Priority Support</li>
+                    </ul>
+                    <a href="#" class="btn">Get Started</a>
+                </div>
+                <div class="pricing-card">
+                    <h3 class="plan-name">Premium</h3>
+                    <div class="plan-price">$19<span>/month</span></div>
+                    <ul class="plan-features">
+                        <li>All Pro Features</li>
+                        <li>Meal Planning & Grocery Lists</li>
+                        <li>Nutritional Analysis</li>
+                        <li>Personalized Cooking Tips</li>
+                        <li>24/7 Premium Support</li>
+                    </ul>
+                    <a href="#" class="btn">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>What Our Users Say</h2>
+                <p>Discover how DishGennie has transformed cooking for our community</p>
+            </div>
+            <div class="testimonial-cards">
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <div class="user-img">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <div class="user-name">Sarah Johnson</div>
+                            <div class="user-role">Home Cook</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"DishGennie has completely changed how I approach cooking. I no longer
+                        waste ingredients and always have new recipe ideas!"</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <div class="user-img">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <div class="user-name">Michael Chen</div>
+                            <div class="user-role">Food Blogger</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"As a food blogger, DishGennie helps me create unique content quickly.
+                        The AI suggestions are surprisingly creative and delicious!"</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="user-info">
+                        <div class="user-img">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <div class="user-name">Emma Rodriguez</div>
+                            <div class="user-role">Busy Parent</div>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"With two picky eaters at home, DishGennie has been a lifesaver. It
+                        creates recipes that everyone enjoys, saving me time and stress."</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Powerful Features</h2>
+                <p>Discover everything DishGennie has to offer</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered Recipes</h3>
+                    <p>Our advanced AI creates unique recipes based on your available ingredients and preferences.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Dietary Customization</h3>
+                    <p>Accommodate any dietary need - vegan, gluten-free, keto, allergies, and more.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Meal Planning</h3>
+                    <p>Plan your weekly meals and generate shopping lists automatically.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Nutritional Insights</h3>
+                    <p>Get detailed nutritional information for every recipe you generate.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-save"></i>
+                    </div>
+                    <h3>Save & Organize</h3>
+                    <p>Save your favorite recipes and organize them into custom collections.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Access DishGennie on any device - perfect for use in the kitchen.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Transform Your Cooking?</h2>
+            <p>Join thousands of users who are already creating amazing dishes with DishGennie</p>
+            <a href="#" class="btn btn-secondary">Start Cooking Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>DishGennie</h3>
+                    <p>Your AI-powered kitchen assistant for creating personalized recipes based on your ingredients and
+                        preferences.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#procedure">How It Works</a></li>
+                        <li><a href="#plans">Pricing</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#features">Features</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Recipe Gallery</a></li>
+                        <li><a href="#">Cooking Tips</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> hello@dishgennie.com</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Culinary Street, Foodville</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 DishGennie. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple animation on scroll
+        const menuBtn = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile menu toggle
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+
+            mobileMenu.addEventListener('click', function () {
+                navLinks.classList.toggle('active');
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+
+                        // Close mobile menu if open
+                        if (window.innerWidth <= 768) {
+                            navLinks.classList.remove('active');
+                        }
+                    }
+                });
+            });
+
+            // Add animation class to elements when they come into view
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe elements for animation
+            document.querySelectorAll('.step, .pricing-card, .testimonial-card, .feature-card').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+
+</html>

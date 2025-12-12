@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DishGennie - Food Analysis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --text: #f0edea;
+            --background: #120d09;
+            --primary: #debd9d;
+            --secondary: #8c541c;
+            --accent: #eb8c2d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            --radius: 12px;
+            --card-bg: #1c1611;
+            --border: rgba(140, 84, 28, 0.3);
+            --light-bg: #241c15;
+            --success: #4CAF50;
+            --error: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 16px;
+            max-width: 1000px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-top: 8px;
+            border: 1px solid var(--border);
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .tagline {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            color: var(--accent);
+        }
+
+        /* Image Analysis Section */
+        .image-analysis-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 20px;
+            margin-top: 8px;
+        }
+
+        .image-display {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            background-color: var(--light-bg);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            height: 280px;
+        }
+
+        .image-preview {
+            flex: 1;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #1c1611 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-placeholder {
+            text-align: center;
+            color: var(--secondary);
+        }
+
+        .image-placeholder i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .image-placeholder-text {
+            font-size: 0.85rem;
+            max-width: 160px;
+            margin: 0 auto;
+            line-height: 1.4;
+        }
+
+        .image-title {
+            background-color: var(--light-bg);
+            color: var(--primary);
+            padding: 10px 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .image-actions {
+            padding: 12px;
+            display: flex;
+            gap: 8px;
+            background-color: var(--light-bg);
+            border-top: 1px solid var(--border);
+        }
+
+        .image-btn {
+            flex: 1;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            background-color: var(--card-bg);
+            color: var(--primary);
+            border: 1px solid var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .image-btn:hover {
+            background-color: var(--secondary);
+            color: var(--text);
+            border-color: var(--secondary);
+        }
+
+        .image-btn.capture {
+            background-color: var(--secondary);
+            color: var(--text);
+            border-color: var(--secondary);
+        }
+
+        .image-btn.capture:hover {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .analysis-content {
+            background-color: var(--light-bg);
+            border-radius: var(--radius);
+            padding: 18px;
+            border: 1px solid var(--border);
+        }
+
+        .category-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .image-description {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 16px;
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 120px;
+            max-height: 140px;
+            overflow-y: auto;
+        }
+
+        .image-description::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .image-description::-webkit-scrollbar-track {
+            background: var(--light-bg);
+            border-radius: 4px;
+        }
+
+        .image-description::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 4px;
+        }
+
+        /* Re-Analysis Button */
+        .re-analysis-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--secondary);
+            color: var(--text);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            gap: 8px;
+        }
+
+        .re-analysis-btn:hover {
+            background-color: var(--accent);
+            box-shadow: 0 2px 6px rgba(235, 140, 45, 0.2);
+        }
+
+        .re-analysis-btn:disabled {
+            background-color: #5a3c1a;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Currently Have Section */
+        .checkmarks {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .checkmark-item {
+            display: flex;
+            align-items: center;
+            background-color: var(--light-bg);
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: var(--text);
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+        }
+
+        .checkmark-item i {
+            color: var(--success);
+            margin-right: 8px;
+            font-size: 1rem;
+        }
+
+        .checkmark-item:hover {
+            background-color: rgba(222, 189, 157, 0.1);
+            transform: translateY(-2px);
+            border-color: var(--secondary);
+        }
+
+        /* Am I Correct Section */
+        .feedback-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .feedback-btn {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid var(--border);
+            background-color: var(--card-bg);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .feedback-btn.yes {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .feedback-btn.no {
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .feedback-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .feedback-btn.yes:hover {
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .feedback-btn.no:hover {
+            background-color: rgba(244, 67, 54, 0.1);
+        }
+
+        .feedback-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Recipe Cards Section (Initially Hidden) */
+        .recipes-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border);
+            display: none;
+        }
+
+        .recipes-section.show {
+            display: block;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .recipes-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .recipes-title i {
+            color: var(--accent);
+        }
+
+        .recipe-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 12px;
+            margin-bottom: 24px;
+        }
+
+        .recipe-card {
+            background-color: var(--light-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            border-color: var(--secondary);
+        }
+
+        .recipe-image {
+            height: 140px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .recipe-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .recipe-content {
+            padding: 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .recipe-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .recipe-ingredients {
+            font-size: 0.85rem;
+            color: var(--text);
+            margin-bottom: 12px;
+            flex-grow: 1;
+            line-height: 1.4;
+            opacity: 0.9;
+        }
+
+        .recipe-make-btn {
+            background-color: var(--secondary);
+            color: var(--text);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: auto;
+        }
+
+        .recipe-make-btn:hover {
+            background-color: var(--accent);
+            box-shadow: 0 2px 6px rgba(235, 140, 45, 0.2);
+        }
+
+        /* Re-Generate Button at end of recipe cards */
+        .re-generate-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .re-generate-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--accent);
+            color: var(--background);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 3px 8px rgba(235, 140, 45, 0.15);
+            gap: 8px;
+        }
+
+        .re-generate-btn i {
+            font-size: 1rem;
+        }
+
+        .re-generate-btn:hover {
+            background-color: #ff9c3d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(235, 140, 45, 0.3);
+        }
+
+        .re-generate-btn:disabled {
+            background-color: #a86420;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Divider Line */
+        .divider {
+            height: 1px;
+            background-color: var(--border);
+            margin: 20px 0;
+        }
+
+        /* Notification Message */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--secondary);
+            color: var(--text);
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification i {
+            margin-right: 8px;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 24px;
+            color: var(--secondary);
+            font-size: 0.85rem;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .image-analysis-container {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .image-display {
+                height: 240px;
+            }
+
+            .checkmarks {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .feedback-options {
+                grid-template-columns: 1fr;
+            }
+
+            .recipe-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .notification {
+                left: 16px;
+                right: 16px;
+                transform: translateY(-150%);
+                max-width: none;
+            }
+
+            .notification.show {
+                transform: translateY(0);
+            }
+
+            body {
+                padding: 12px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .logo {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .checkmarks {
+                grid-template-columns: 1fr;
+            }
+
+            .image-display {
+                height: 200px;
+            }
+
+            .container {
+                padding: 16px;
+            }
+
+            .section-title {
+                font-size: 1rem;
+            }
+
+            .logo {
+                font-size: 1.6rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .pulse {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .image-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(18, 13, 9, 0.9));
+            color: var(--text);
+            padding: 8px 12px;
+            font-size: 0.75rem;
+            text-align: center;
+        }
+
+        /* Recipe image colors updated for dark theme */
+        .recipe-image-colors {
+            --color1: #debd9d;
+            --color2: #8c541c;
+            --color3: #eb8c2d;
+            --color4: #5a3c1a;
+            --color5: #a86420;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="notification" id="notification">
+        <i class="fas fa-info-circle"></i>
+        <span id="notification-text">Notification message</span>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 class="logo">DishGennie</h1>
+            <p class="tagline">AI food analysis & recipe generation</p>
+        </header>
+
+        <section class="section">
+            <h2 class="section-title">
+                <i class="fas fa-camera"></i>Your Captured Image
+            </h2>
+
+            <div class="image-analysis-container">
+                <!-- Image Display Section -->
+                <div class="image-display">
+                    <div class="image-preview" id="image-preview">
+                        <div class="image-placeholder">
+                            <i class="fas fa-utensils"></i>
+                            <div class="image-placeholder-text">
+                                Your food image will appear here
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="image-title">
+                        <i class="fas fa-image"></i>Captured Image
+                    </div>
+
+                    <div class="image-actions">
+                        <button class="image-btn capture" id="capture-btn">
+                            <i class="fas fa-camera"></i>Capture
+                        </button>
+                        <button class="image-btn" id="upload-btn">
+                            <i class="fas fa-upload"></i>Upload
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Analysis Content Section -->
+                <div class="analysis-content">
+                    <div class="category-name">
+                        <i class="fas fa-tag"></i><span id="category-name">Fruit Salad</span>
+                    </div>
+
+                    <div class="image-description" id="image-description">
+                        A colorful mix of fresh fruits including strawberries, blueberries, kiwi, and pineapple. The
+                        image shows a healthy fruit salad bowl with mint leaves as garnish.
+                    </div>
+
+                    <button class="re-analysis-btn" id="re-analysis-btn">
+                        <i class="fas fa-redo-alt"></i>Re-Analysis
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="section">
+            <h2 class="section-title">
+                <i class="fas fa-check-circle"></i>You Currently Have
+            </h2>
+
+            <div class="checkmarks" id="checkmarks-container">
+                <div class="checkmark-item">
+                    <i class="fas fa-check"></i>Strawberries
+                </div>
+                <div class="checkmark-item">
+                    <i class="fas fa-check"></i>Blueberries
+                </div>
+                <div class="checkmark-item">
+                    <i class="fas fa-check"></i>Kiwi
+                </div>
+                <div class="checkmark-item">
+                    <i class="fas fa-check"></i>Pineapple
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section class="section">
+            <h2 class="section-title">
+                <i class="fas fa-question-circle"></i>Am I Correct?
+            </h2>
+
+            <div class="feedback-options">
+                <button class="feedback-btn yes" id="yes-btn">
+                    <i class="fas fa-thumbs-up"></i>Yes, Correct
+                </button>
+                <button class="feedback-btn no" id="no-btn">
+                    <i class="fas fa-thumbs-down"></i>No, Try Again
+                </button>
+            </div>
+        </section>
+
+        <!-- Recipe Cards Section (Initially Hidden) -->
+        <section class="recipes-section" id="recipes-section">
+            <h3 class="recipes-title">
+                <i class="fas fa-utensils"></i>Recommended Recipes
+            </h3>
+            <div class="recipe-cards" id="recipe-cards">
+                <!-- Recipe cards will be dynamically inserted here -->
+            </div>
+
+            <!-- Re-Generate Recipes Button at the end -->
+            <div class="re-generate-container">
+                <button class="re-generate-btn" id="re-generate-btn">
+                    <i class="fas fa-sync-alt"></i>Re-Generate Recipes
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>DishGennie &copy; 2023 | AI Food Analysis Platform</p>
+    </footer>
+
+    <!-- Hidden file input for image upload -->
+    <input type="file" id="file-input" accept="image/*" style="display: none;">
+
+    <script>
+        // DOM elements
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
+        const reAnalysisBtn = document.getElementById('re-analysis-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        const noBtn = document.getElementById('no-btn');
+        const reGenerateBtn = document.getElementById('re-generate-btn');
+        const captureBtn = document.getElementById('capture-btn');
+        const uploadBtn = document.getElementById('upload-btn');
+        const fileInput = document.getElementById('file-input');
+        const imagePreview = document.getElementById('image-preview');
+        const categoryName = document.getElementById('category-name');
+        const imageDescription = document.getElementById('image-description');
+        const checkmarksContainer = document.getElementById('checkmarks-container');
+        const recipesSection = document.getElementById('recipes-section');
+        const recipeCardsContainer = document.getElementById('recipe-cards');
+
+        // Sample data for demonstration
+        const sampleCategories = [
+            "Fruit Salad",
+            "Mixed Berry Bowl",
+            "Tropical Fruit Mix",
+            "Breakfast Bowl",
+            "Fruit Platter"
+        ];
+
+        const sampleDescriptions = [
+            "Colorful mix of fresh fruits including strawberries, blueberries, kiwi, and pineapple with mint garnish.",
+            "Fresh berries including strawberries, raspberries, and blueberries served in a bowl.",
+            "Tropical fruit mix with mango, pineapple, papaya, and dragon fruit.",
+            "Breakfast bowl with yogurt, granola, and mixed berries.",
+            "Artfully arranged fruit platter with melons, grapes, and citrus fruits."
+        ];
+
+        // Ingredients for each food type (will ONLY update on Re-Analysis)
+        const sampleIngredients = [
+            ["Strawberries", "Blueberries", "Kiwi", "Pineapple", "Mint"],
+            ["Strawberries", "Raspberries", "Blueberries", "Blackberries"],
+            ["Mango", "Pineapple", "Papaya", "Dragon Fruit"],
+            ["Yogurt", "Granola", "Mixed Berries", "Honey"],
+            ["Watermelon", "Grapes", "Oranges", "Apples"]
+        ];
+
+        // Sample recipe data - updated colors for dark theme
+        const sampleRecipes = [
+            {
+                name: "Fruit Salad Delight",
+                ingredients: "Strawberries, blueberries, kiwi, pineapple, honey, mint",
+                imageColor: "#8c541c",
+                prepTime: "15 min"
+            },
+            {
+                name: "Berry Smoothie Bowl",
+                ingredients: "Mixed berries, yogurt, honey, granola, chia seeds",
+                imageColor: "#5a3c1a",
+                prepTime: "10 min"
+            },
+            {
+                name: "Tropical Paradise Bowl",
+                ingredients: "Mango, pineapple, coconut, dragon fruit, lime zest",
+                imageColor: "#a86420",
+                prepTime: "20 min"
+            },
+            {
+                name: "Healthy Breakfast Parfait",
+                ingredients: "Greek yogurt, granola, mixed berries, honey, almonds",
+                imageColor: "#eb8c2d",
+                prepTime: "10 min"
+            },
+            {
+                name: "Fresh Fruit Platter",
+                ingredients: "Seasonal fruits, mint garnish, yogurt dip",
+                imageColor: "#debd9d",
+                prepTime: "25 min"
+            },
+            {
+                name: "Fruit & Nut Energy Bowl",
+                ingredients: "Mixed fruits, almonds, walnuts, honey, coconut flakes",
+                imageColor: "#8c541c",
+                prepTime: "15 min"
+            }
+        ];
+
+        // Sample food images (SVG placeholders) - updated for dark theme
+        const sampleImages = [
+            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%231c1611'/%3E%3Ccircle cx='200' cy='150' r='80' fill='%238c541c'/%3E%3Ccircle cx='150' cy='120' r='30' fill='%23eb8c2d'/%3E%3Ccircle cx='250' cy='120' r='25' fill='%23debd9d'/%3E%3Ccircle cx='180' cy='180' r='35' fill='%235a3c1a'/%3E%3Ccircle cx='230' cy='200' r='30' fill='%23a86420'/%3E%3Ctext x='200' y='280' font-family='Arial' font-size='14' text-anchor='middle' fill='%23f0edea'%3EFruit Salad%3C/text%3E%3C/svg%3E",
+            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%231c1611'/%3E%3Ccircle cx='120' cy='150' r='40' fill='%23eb8c2d'/%3E%3Ccircle cx='200' cy='150' r='35' fill='%23debd9d'/%3E%3Ccircle cx='280' cy='150' r='30' fill='%238c541c'/%3E%3Ccircle cx='160' cy='100' r='25' fill='%235a3c1a'/%3E%3Ccircle cx='240' cy='100' r='20' fill='%23a86420'/%3E%3Ctext x='200' y='280' font-family='Arial' font-size='14' text-anchor='middle' fill='%23f0edea'%3EBerry Bowl%3C/text%3E%3C/svg%3E",
+            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%231c1611'/%3E%3Cellipse cx='200' cy='150' rx='100' ry='60' fill='%23a86420'/%3E%3Ccircle cx='150' cy='130' r='30' fill='%23eb8c2d'/%3E%3Ccircle cx='250' cy='130' r='25' fill='%23debd9d'/%3E%3Ccircle cx='180' cy='180' r='35' fill='%238c541c'/%3E%3Ccircle cx='230' cy='200' r='30' fill='%235a3c1a'/%3E%3Ctext x='200' y='280' font-family='Arial' font-size='14' text-anchor='middle' fill='%23f0edea'%3ETropical Mix%3C/text%3E%3C/svg%3E"
+        ];
+
+        // Current data index
+        let currentDataIndex = 0;
+        let currentImageIndex = 0;
+        let currentIngredients = [...sampleIngredients[0]]; // Initial ingredients
+
+        // Show notification function
+        function showNotification(message, type = 'info') {
+            notificationText.textContent = message;
+
+            // Set color based on type
+            if (type === 'error') {
+                notification.style.backgroundColor = 'var(--error)';
+            } else if (type === 'success') {
+                notification.style.backgroundColor = 'var(--success)';
+            } else {
+                notification.style.backgroundColor = 'var(--secondary)';
+            }
+
+            // Show notification
+            notification.classList.add('show');
+
+            // Auto hide after 2.5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2500);
+        }
+
+        // Update image display
+        function updateImageDisplay(imageUrl) {
+            // Clear the preview
+            imagePreview.innerHTML = '';
+
+            // Create image element
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.alt = "Food Image";
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+
+            // Add fade-in animation
+            img.classList.add('fade-in');
+
+            // Add caption
+            const caption = document.createElement('div');
+            caption.className = 'image-caption';
+            caption.textContent = 'Captured: ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // Add to preview
+            imagePreview.appendChild(img);
+            imagePreview.appendChild(caption);
+        }
+
+        // Update analysis data (called on initial load and image capture/upload)
+        function updateAnalysisData() {
+            // Update category and description
+            categoryName.textContent = sampleCategories[currentDataIndex];
+            imageDescription.textContent = sampleDescriptions[currentDataIndex];
+
+            // Update current ingredients based on the image analysis
+            currentIngredients = [...sampleIngredients[currentDataIndex]];
+
+            // Update checkmarks with current ingredients
+            updateCheckmarks();
+        }
+
+        // Update checkmarks with current ingredients
+        function updateCheckmarks() {
+            // Clear current checkmarks
+            checkmarksContainer.innerHTML = '';
+
+            // Create new checkmark items from currentIngredients
+            currentIngredients.forEach((ingredient, index) => {
+                const checkmarkItem = document.createElement('div');
+                checkmarkItem.className = 'checkmark-item fade-in';
+                checkmarkItem.style.animationDelay = `${index * 0.05}s`;
+                checkmarkItem.innerHTML = `<i class="fas fa-check"></i>${ingredient}`;
+                checkmarksContainer.appendChild(checkmarkItem);
+            });
+        }
+
+        // Generate recipe cards
+        function generateRecipeCards() {
+            // Clear current recipe cards
+            recipeCardsContainer.innerHTML = '';
+
+            // Show recipe section
+            recipesSection.classList.add('show');
+
+            // Create recipe cards
+            sampleRecipes.forEach((recipe, index) => {
+                const recipeCard = document.createElement('div');
+                recipeCard.className = 'recipe-card fade-in';
+                recipeCard.style.animationDelay = `${index * 0.1}s`;
+
+                // Create SVG image with recipe-specific color
+                const svgImage = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='${recipe.imageColor}'/%3E%3Ccircle cx='200' cy='120' r='60' fill='%231c1611' opacity='0.8'/%3E%3Cpath d='M180,150 L220,150 M200,130 L200,170' stroke='%23eb8c2d' stroke-width='8' stroke-linecap='round'/%3E%3Ccircle cx='150' cy='200' r='25' fill='%231c1611' opacity='0.9'/%3E%3Ccircle cx='250' cy='200' r='25' fill='%231c1611' opacity='0.9'/%3E%3Ctext x='200' y='280' font-family='Arial' font-size='14' text-anchor='middle' fill='%23f0edea'%3E${encodeURIComponent(recipe.name)}%3C/text%3E%3C/svg%3E`;
+
+                recipeCard.innerHTML = `
+                    <div class="recipe-image">
+                        <img src="${svgImage}" alt="${recipe.name}">
+                    </div>
+                    <div class="recipe-content">
+                        <h4 class="recipe-name">${recipe.name}</h4>
+                        <p class="recipe-ingredients"><strong>Ingredients:</strong> ${recipe.ingredients}</p>
+                        <p class="recipe-ingredients" style="color: #eb8c2d; font-weight: 500;"><i class="fas fa-clock"></i> Prep time: ${recipe.prepTime}</p>
+                        <button class="recipe-make-btn" data-recipe="${recipe.name}">
+                            <i class="fas fa-utensils"></i>Let's Make
+                        </button>
+                    </div>
+                `;
+
+                recipeCardsContainer.appendChild(recipeCard);
+            });
+
+            // Add event listeners to "Let's Make" buttons
+            document.querySelectorAll('.recipe-make-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const recipeName = this.getAttribute('data-recipe');
+                    showNotification(`Starting recipe: ${recipeName}! Gathering ingredients...`, 'success');
+                });
+            });
+        }
+
+        // Re-Analysis function - ONLY way to update ingredients
+        function performReAnalysis() {
+            // Disable buttons during analysis
+            reAnalysisBtn.disabled = true;
+            yesBtn.disabled = true;
+            noBtn.disabled = true;
+
+            // Update button text
+            reAnalysisBtn.innerHTML = '<i class="fas fa-spinner fa-spin pulse"></i>Analyzing...';
+
+            // Show notification
+            showNotification("Re-analyzing image...", 'info');
+
+            // Simulate API call delay
+            setTimeout(() => {
+                // Get a new random data index (different from current)
+                let newIndex;
+                do {
+                    newIndex = Math.floor(Math.random() * sampleCategories.length);
+                } while (newIndex === currentDataIndex);
+
+                currentDataIndex = newIndex;
+
+                // Update analysis data (this updates currentIngredients)
+                updateAnalysisData();
+
+                // Update image to match new analysis (optional)
+                if (currentImageIndex !== currentDataIndex % sampleImages.length) {
+                    currentImageIndex = currentDataIndex % sampleImages.length;
+                    updateImageDisplay(sampleImages[currentImageIndex]);
+                }
+
+                // Remove loading state
+                reAnalysisBtn.innerHTML = '<i class="fas fa-redo-alt"></i>Re-Analysis';
+
+                // Re-enable buttons
+                reAnalysisBtn.disabled = false;
+                yesBtn.disabled = false;
+                noBtn.disabled = false;
+
+                // Hide recipe cards when re-analysis is done
+                recipesSection.classList.remove('show');
+
+                // Show success notification
+                showNotification("Re-analysis complete! Ingredients updated.", 'success');
+            }, 1500);
+        }
+
+        // Simulate image capture
+        function simulateImageCapture() {
+            // Cycle through sample images
+            currentImageIndex = (currentImageIndex + 1) % sampleImages.length;
+
+            // Update image display
+            updateImageDisplay(sampleImages[currentImageIndex]);
+
+            // Update data index for new image
+            currentDataIndex = currentImageIndex % sampleCategories.length;
+
+            // Update analysis (this updates ingredients too)
+            updateAnalysisData();
+
+            // Show notification
+            showNotification("New image captured! Analyzing...", 'success');
+
+            // Hide recipe cards when new image is captured
+            recipesSection.classList.remove('show');
+        }
+
+        // Initialize the app
+        function initApp() {
+            // Load initial image and data
+            updateImageDisplay(sampleImages[currentImageIndex]);
+            updateAnalysisData();
+
+            // Capture button
+            captureBtn.addEventListener('click', function () {
+                simulateImageCapture();
+            });
+
+            // Upload button
+            uploadBtn.addEventListener('click', function () {
+                fileInput.click();
+            });
+
+            // File input
+            fileInput.addEventListener('change', function (e) {
+                if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+
+                    if (!file.type.match('image.*')) {
+                        showNotification("Please select an image file", 'error');
+                        return;
+                    }
+
+                    // Create a local URL for the file
+                    const imageUrl = URL.createObjectURL(file);
+
+                    // Update image display
+                    updateImageDisplay(imageUrl);
+
+                    // Get a random data index for the new image
+                    currentDataIndex = Math.floor(Math.random() * sampleCategories.length);
+
+                    // Update analysis (this updates ingredients too)
+                    updateAnalysisData();
+
+                    // Show notification
+                    showNotification("Image uploaded! Analyzing...", 'success');
+
+                    // Reset file input
+                    fileInput.value = '';
+
+                    // Hide recipe cards when new image is uploaded
+                    recipesSection.classList.remove('show');
+                }
+            });
+
+            // Re-Analysis button (ONLY way to update ingredients)
+            reAnalysisBtn.addEventListener('click', function () {
+                performReAnalysis();
+            });
+
+            // Yes button - Show recipe cards when user confirms analysis is correct
+            yesBtn.addEventListener('click', function () {
+                const originalText = yesBtn.innerHTML;
+                yesBtn.innerHTML = '<i class="fas fa-check"></i>Thank You!';
+                yesBtn.style.backgroundColor = 'var(--success)';
+                yesBtn.style.color = 'var(--text)';
+                yesBtn.style.borderColor = 'var(--success)';
+
+                // Generate and show recipe cards
+                generateRecipeCards();
+
+                // Scroll to recipe cards
+                setTimeout(() => {
+                    recipesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+
+                showNotification("Analysis confirmed! Generating recipes...", 'success');
+
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    yesBtn.innerHTML = originalText;
+                    yesBtn.style.backgroundColor = '';
+                    yesBtn.style.color = '';
+                    yesBtn.style.borderColor = '';
+                }, 2000);
+            });
+
+            // No button
+            noBtn.addEventListener('click', function () {
+                const originalText = noBtn.innerHTML;
+                noBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i>Re-Analyzing...';
+                noBtn.style.backgroundColor = 'var(--error)';
+                noBtn.style.color = 'var(--text)';
+                noBtn.style.borderColor = 'var(--error)';
+
+                showNotification("We're sorry. Let me re-analyze...", 'error');
+
+                // Disable buttons
+                yesBtn.disabled = true;
+                noBtn.disabled = true;
+
+                setTimeout(() => {
+                    // Reset button
+                    noBtn.innerHTML = originalText;
+                    noBtn.style.backgroundColor = '';
+                    noBtn.style.color = '';
+                    noBtn.style.borderColor = '';
+
+                    // Re-enable yes button
+                    yesBtn.disabled = false;
+
+                    // Trigger re-analysis (this will update ingredients)
+                    performReAnalysis();
+                }, 1500);
+            });
+
+            // Re-Generate Recipes button (at end of recipe cards)
+            reGenerateBtn.addEventListener('click', function () {
+                const originalText = reGenerateBtn.innerHTML;
+                reGenerateBtn.innerHTML = '<i class="fas fa-spinner fa-spin pulse"></i>Generating...';
+                reGenerateBtn.disabled = true;
+
+                showNotification("Generating new recipes based on your ingredients...", 'info');
+
+                setTimeout(() => {
+                    // Clear and regenerate recipe cards
+                    recipeCardsContainer.innerHTML = '';
+                    generateRecipeCards();
+
+                    // Reset button
+                    reGenerateBtn.innerHTML = originalText;
+                    reGenerateBtn.disabled = false;
+
+                    showNotification("New recipes generated successfully!", 'success');
+                }, 1200);
+            });
+        }
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+
+</html>

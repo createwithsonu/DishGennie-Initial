@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - DishGennie</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --text: #f0edea;
+            --background: #120d09;
+            --primary: #debd9d;
+            --secondary: #8c541c;
+            --accent: #eb8c2d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            --radius: 12px;
+            --card-bg: #1c1611;
+            --border: rgba(140, 84, 28, 0.3);
+            --light-bg: #241c15;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--background);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(222, 189, 157, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 85% 30%, rgba(235, 140, 45, 0.05) 0%, transparent 20%);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header */
+        header {
+            background-color: rgba(28, 22, 17, 0.95);
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--border);
+            height: 80px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            height: 100%;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .logo img {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            width: 100%;
+            min-height: 100vh;
+            margin-top: 80px;
+        }
+
+        .form-container {
+            background-color: var(--card-bg);
+            padding: 50px 45px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            margin: auto;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+        }
+
+        .form-header {
+            margin-bottom: 35px;
+            text-align: center;
+        }
+
+        .form-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+
+        .form-header p {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary);
+            font-size: 1rem;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 14px 14px 14px 45px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background-color: var(--light-bg);
+            color: var(--text);
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .form-container input:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(235, 140, 45, 0.15);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--secondary);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 25px 0 30px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        .form-container button[type="submit"] {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: var(--background);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            letter-spacing: 0.5px;
+            margin-bottom: 25px;
+        }
+
+        .form-container button[type="submit"]:hover {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(235, 140, 45, 0.2);
+        }
+
+        .form-container button[type="submit"]:active {
+            transform: translateY(-1px);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+            color: var(--text);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: var(--border);
+        }
+
+        .divider span {
+            padding: 0 15px;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--light-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 1.2rem;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .social-btn:hover {
+            background-color: var(--background);
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .signup-link {
+            color: var(--primary);
+            font-size: 0.95rem;
+            margin-top: 10px;
+        }
+
+        .signup-link a {
+            color: var(--accent);
+            font-weight: 600;
+            transition: var(--transition);
+            margin-left: 5px;
+        }
+
+        .signup-link a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            color: var(--text);
+            padding: 25px 0;
+            text-align: center;
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: var(--primary);
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 40px 30px;
+                margin: 0 15px;
+            }
+
+            .form-header h1 {
+                font-size: 1.9rem;
+            }
+
+            .form-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .navbar {
+                padding: 12px 0;
+            }
+
+            .logo {
+                font-size: 1.6rem;
+            }
+
+            .logo img {
+                width: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 35px 25px;
+            }
+
+            .form-header h1 {
+                font-size: 1.7rem;
+            }
+
+            .form-header p {
+                font-size: 0.9rem;
+            }
+
+            .social-login {
+                gap: 10px;
+            }
+
+            .social-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="/" class="logo">
+                    <img src="/static/images/Logo.png" alt="DishGennie Logo">
+                    DishGennie
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="form-container">
+                <div class="form-header">
+                    <h1>Welcome !</h1>
+                    <p>Sign in to your DishGennie account to continue</p>
+                </div>
+
+                <form action="/signin/" method="post">
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                        </div>
+                    </div>
+
+                    <!-- Username Field -->
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="Enter your password"
+                                required>
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- New: Stay Signed In Field -->
+                    <div class="form-group">
+                        <label for="stay-signed-in">
+                            <div class="remember-me">
+                                <input type="checkbox" id="stay-signed-in" name="stay-signed-in">
+                                <span>Stay signed in for 30 days</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="form-footer">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">Remember Me</label>
+                        </div>
+                        <a href="/forgot-password/" class="forgot-password">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit">Sign In</button>
+
+                    <div class="divider">
+                        <span>Or continue with</span>
+                    </div>
+
+                    <div class="social-login">
+                        <a href="#" class="social-btn" title="Sign in with Google">
+                            <i class="fab fa-google"></i>
+                        </a>
+                        <a href="#" class="social-btn" title="Sign in with Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-btn" title="Sign in with Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+
+                    <p class="signup-link">
+                        Don't have an account? <a href="/signup/">Sign Up</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 DishGennie. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Toggle icon
+            const icon = this.querySelector('i');
+            if (type === 'password') {
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            } else {
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }
+        });
+
+        // Form submission animation
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function (e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+            submitBtn.disabled = true;
+
+            // In a real app, this would be an API call
+            // For demo purposes, we'll reset after 2 seconds
+            setTimeout(() => {
+                submitBtn.innerHTML = 'Sign In';
+                submitBtn.disabled = false;
+                alert('Sign in functionality would be implemented in a real application.');
+            }, 2000);
+
+            e.preventDefault(); // Remove this line in production
+        });
+
+        // Add focus effects to inputs
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function () {
+                this.parentElement.style.boxShadow = '0 0 0 3px rgba(235, 140, 45, 0.15)';
+            });
+
+            input.addEventListener('blur', function () {
+                this.parentElement.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>

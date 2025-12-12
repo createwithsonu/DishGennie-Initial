@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Planner | DishGennie</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --text: #f0edea;
+            --background: #120d09;
+            --primary: #debd9d;
+            --secondary: #8c541c;
+            --accent: #eb8c2d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            --radius: 12px;
+            --card-bg: #1c1611;
+            --border: rgba(140, 84, 28, 0.3);
+            --light-bg: #241c15;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            background-color: rgba(18, 13, 9, 0.95);
+            padding: 1.2rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .navbar-brand i {
+            color: var(--accent);
+        }
+        
+        .nav-link {
+            color: var(--text) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 30px;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary) !important;
+            background-color: rgba(222, 189, 157, 0.1);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            padding: 100px 0 50px;
+            background: linear-gradient(rgba(18, 13, 9, 0.9), rgba(18, 13, 9, 0.95));
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: rgba(240, 237, 234, 0.8);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+        
+        /* Planner Section */
+        .planner-section {
+            padding: 50px 0 100px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .section-title span {
+            color: var(--accent);
+        }
+        
+        /* Meal Cards */
+        .meal-plan-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .meal-plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .day-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .day-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+            color: var(--background);
+            font-weight: bold;
+        }
+        
+        .day-title {
+            font-size: 1.4rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .plan-btn {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border: none;
+            color: var(--background);
+            padding: 0.6rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .plan-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(235, 140, 45, 0.2);
+        }
+        
+        .plan-btn.planning {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+        }
+        
+        .plan-btn.planned {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+        }
+        
+        .meal-time {
+            color: var(--accent);
+            font-size: 0.9rem;
+            background: rgba(235, 140, 45, 0.1);
+            padding: 3px 10px;
+            border-radius: 15px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .form-control {
+            background-color: rgba(28, 22, 17, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            padding: 0.75rem 1rem;
+            width: 100%;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(235, 140, 45, 0.1);
+        }
+        
+        .form-control::placeholder {
+            color: rgba(240, 237, 234, 0.5);
+        }
+        
+        .calorie-input {
+            width: 100px;
+        }
+        
+        .calorie-input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .calorie-input-group span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .nutrition-info {
+            background: rgba(28, 22, 17, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+        }
+        
+        .nutrition-info.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .calorie-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .calorie-count {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.1rem;
+            font-size: 1.5rem;
+        }
+        
+        .calorie-label {
+            color: rgba(240, 237, 234, 0.8);
+        }
+        
+        .calorie-icon {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        
+        .meal-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: rgba(28, 22, 17, 0.3);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .meal-name {
+            flex: 1;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .meal-calories {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 1rem;
+            min-width: 70px;
+            text-align: right;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border: none;
+            color: var(--background);
+            padding: 0.75rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(235, 140, 45, 0.2);
+        }
+        
+        .btn-block {
+            width: 100%;
+        }
+        
+        .week-summary {
+            background-color: var(--light-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .summary-title {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .summary-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+        }
+        
+        .summary-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-label {
+            color: rgba(240, 237, 234, 0.8);
+            font-size: 0.9rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer {
+            background-color: var(--card-bg);
+            padding: 3rem 0 1.5rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+        
+        .footer-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: rgba(240, 237, 234, 0.7);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .meal-plan-card {
+                padding: 1.5rem;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .plan-btn {
+                align-self: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-utensils"></i> DishGennie
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/services/">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/meal-planner/">Meal Planner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/recipes/">Recipes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact/">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Meal Planning Made Simple</h1>
+            <p class="hero-subtitle">
+                Plan your weekly meals with ease. Enter meal details and calories, then click "Plan" to calculate daily totals.
+            </p>
+        </div>
+    </section>
+
+    <!-- Planner Section -->
+    <section class="planner-section">
+        <div class="container">
+            <h2 class="section-title">Your <span>Weekly Meal Plan</span></h2>
+            
+            <div class="row">
+                <!-- Monday Card -->
+                <div class="col-lg-6 mb-4">
+                    <div class="meal-plan-card" id="monday-card">
+                        <div class="card-header">
+                            <div class="day-info">
+                                <div class="day-icon">M</div>
+                                <div class="day-title">Monday</div>
+                            </div>
+                            <button class="plan-btn" data-day="monday">
+                                <i class="fas fa-calculator"></i> Plan
+                            </button>
+                        </div>
+                        
+                        <div class="meal-time">Breakfast</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Oatmeal with berries</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="350" data-meal="breakfast">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-time">Lunch</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Chicken salad wrap</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="420" data-meal="lunch">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-time">Dinner</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Grilled salmon with vegetables</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="550" data-meal="dinner">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="nutrition-info" id="monday-nutrition">
+                            <div class="calorie-display">
+                                <i class="fas fa-fire calorie-icon"></i>
+                                <div>
+                                    <div class="calorie-label">Total Calories</div>
+                                    <div class="calorie-count" id="monday-total">0</div>
+                                </div>
+                            </div>
+                            <div class="calorie-display">
+                                <i class="fas fa-utensils calorie-icon"></i>
+                                <div>
+                                    <div class="calorie-label">Meals Planned</div>
+                                    <div class="calorie-count">3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tuesday Card -->
+                <div class="col-lg-6 mb-4">
+                    <div class="meal-plan-card" id="tuesday-card">
+                        <div class="card-header">
+                            <div class="day-info">
+                                <div class="day-icon">T</div>
+                                <div class="day-title">Tuesday</div>
+                            </div>
+                            <button class="plan-btn" data-day="tuesday">
+                                <i class="fas fa-calculator"></i> Plan
+                            </button>
+                        </div>
+                        
+                        <div class="meal-time">Breakfast</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Greek yogurt with granola</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="280" data-meal="breakfast">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-time">Lunch</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Quinoa bowl with veggies</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="380" data-meal="lunch">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-time">Dinner</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Vegetable stir fry with tofu</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="450" data-meal="dinner">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="nutrition-info" id="tuesday-nutrition">
+                            <div class="calorie-display">
+                                <i class="fas fa-fire calorie-icon"></i>
+                                <div>
+                                    <div class="calorie-label">Total Calories</div>
+                                    <div class="calorie-count" id="tuesday-total">0</div>
+                                </div>
+                            </div>
+                            <div class="calorie-display">
+                                <i class="fas fa-utensils calorie-icon"></i>
+                                <div>
+                                    <div class="calorie-label">Meals Planned</div>
+                                    <div class="calorie-count">3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Wednesday Card -->
+                <div class="col-lg-6 mb-4">
+                    <div class="meal-plan-card" id="wednesday-card">
+                        <div class="card-header">
+                            <div class="day-info">
+                                <div class="day-icon">W</div>
+                                <div class="day-title">Wednesday</div>
+                            </div>
+                            <button class="plan-btn" data-day="wednesday">
+                                <i class="fas fa-calculator"></i> Plan
+                            </button>
+                        </div>
+                        
+                        <div class="meal-time">Breakfast</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Smoothie bowl</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="320" data-meal="breakfast">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-time">Lunch</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Turkey sandwich</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="410" data-meal="lunch">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-time">Dinner</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Pasta with marinara sauce</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="520" data-meal="dinner">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="nutrition-info" id="wednesday-nutrition">
+                            <div class="calorie-display">
+                                <i class="fas fa-fire calorie-icon"></i>
+                                <div>
+                                    <div class="calorie-label">Total Calories</div>
+                                    <div class="calorie-count" id="wednesday-total">0</div>
+                                </div>
+                            </div>
+                            <div class="calorie-display">
+                                <i class="fas fa-utensils calorie-icon"></i>
+                                <div>
+                                    <div class="calorie-label">Meals Planned</div>
+                                    <div class="calorie-count">3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Thursday Card -->
+                <div class="col-lg-6 mb-4">
+                    <div class="meal-plan-card" id="thursday-card">
+                        <div class="card-header">
+                            <div class="day-info">
+                                <div class="day-icon">T</div>
+                                <div class="day-title">Thursday</div>
+                            </div>
+                            <button class="plan-btn" data-day="thursday">
+                                <i class="fas fa-calculator"></i> Plan
+                            </button>
+                        </div>
+                        
+                        <div class="meal-time">Breakfast</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Avocado toast</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="290" data-meal="breakfast">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-time">Lunch</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Lentil soup</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="340" data-meal="lunch">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-time">Dinner</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Chicken curry with rice</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="580" data-meal="dinner">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="nutrition-info" id="thursday-nutrition">
+                            <div class="calorie-display">
+                                <i class="fas fa-fire calorie-icon"></i>
+                                <div>
+                                    <div class="calorie-label">Total Calories</div>
+                                    <div class="calorie-count" id="thursday-total">0</div>
+                                </div>
+                            </div>
+                            <div class="calorie-display">
+                                <i class="fas fa-utensils calorie-icon"></i>
+                                <div>
+                                    <div class="calorie-label">Meals Planned</div>
+                                    <div class="calorie-count">3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Friday Card -->
+                <div class="col-lg-6 mb-4">
+                    <div class="meal-plan-card" id="friday-card">
+                        <div class="card-header">
+                            <div class="day-info">
+                                <div class="day-icon">F</div>
+                                <div class="day-title">Friday</div>
+                            </div>
+                            <button class="plan-btn" data-day="friday">
+                                <i class="fas fa-calculator"></i> Plan
+                            </button>
+                        </div>
+                        
+                        <div class="meal-time">Breakfast</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Pancakes with maple syrup</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="420" data-meal="breakfast">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-time">Lunch</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Caesar salad</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="380" data-meal="lunch">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-time">Dinner</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Homemade pizza</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="650" data-meal="dinner">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="nutrition-info" id="friday-nutrition">
+                            <div class="calorie-display">
+                                <i class="fas fa-fire calorie-icon"></i>
+                                <div>
+                                    <div class="calorie-label">Total Calories</div>
+                                    <div class="calorie-count" id="friday-total">0</div>
+                                </div>
+                            </div>
+                            <div class="calorie-display">
+                                <i class="fas fa-utensils calorie-icon"></i>
+                                <div>
+                                    <div class="calorie-label">Meals Planned</div>
+                                    <div class="calorie-count">3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Saturday Card -->
+                <div class="col-lg-6 mb-4">
+                    <div class="meal-plan-card" id="saturday-card">
+                        <div class="card-header">
+                            <div class="day-info">
+                                <div class="day-icon">S</div>
+                                <div class="day-title">Saturday</div>
+                            </div>
+                            <button class="plan-btn" data-day="saturday">
+                                <i class="fas fa-calculator"></i> Plan
+                            </button>
+                        </div>
+                        
+                        <div class="meal-time">Breakfast</div>
+                        <div class="meal-item">
+                            <div class="meal-name">French toast</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="480" data-meal="breakfast">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-time">Lunch</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Veggie burgers</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="420" data-meal="lunch">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="meal-time">Dinner</div>
+                        <div class="meal-item">
+                            <div class="meal-name">Steak with mashed potatoes</div>
+                            <div class="meal-calories">
+                                <div class="calorie-input-group">
+                                    <input type="number" class="form-control calorie-input" placeholder="Cal" value="720" data-meal="dinner">
+                                    <span>cal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="nutrition-info" id="saturday-nutrition">
+                            <div class="calorie-display">
+                                <i class="fas fa-fire calorie-icon"></i>
+                                <div>
+                                    <div class="calorie-label">Total Calories</div>
+                                    <div class="calorie-count" id="saturday-total">0</div>
+                                </div>
+                            </div>
+                            <div class="calorie-display">
+                                <i class="fas fa-utensils calorie-icon"></i>
+                                <div>
+                                    <div class="calorie-label">Meals Planned</div>
+                                    <div class="calorie-count">3</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Weekly Summary -->
+            <div class="week-summary">
+                <h3 class="summary-title">Weekly Nutrition Summary</h3>
+                
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="summary-value" id="weekly-total">0</div>
+                        <div class="summary-label">Total Calories</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value" id="weekly-average">0</div>
+                        <div class="summary-label">Daily Average</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value" id="meals-planned">0</div>
+                        <div class="summary-label">Meals Planned</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value" id="days-planned">0</div>
+                        <div class="summary-label">Days Planned</div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn-primary" id="plan-all-btn">
+                        <i class="fas fa-calculator"></i> Plan All Days
+                    </button>
+                    <button class="btn-primary" id="save-plan-btn">
+                        <i class="fas fa-save"></i> Save Meal Plan
+                    </button>
+                    <button class="btn-primary" id="shopping-list-btn">
+                        <i class="fas fa-shopping-cart"></i> Generate Shopping List
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="footer-brand">
+                        <i class="fas fa-utensils"></i> DishGennie
+                    </div>
+                    <p style="color: rgba(240, 237, 234, 0.7);">
+                        Your personal AI-powered meal planning companion. Making cooking fun, easy, and personalized for everyone.
+                    </p>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5 style="color: var(--primary); margin-bottom: 1rem;">Quick Links</h5>
+                    <div class="footer-links">
+                        <a href="/">Home</a>
+                        <a href="/services/">Services</a>
+                        <a href="/meal-planner/">Meal Planner</a>
+                        <a href="/contact/">Contact</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <h5 style="color: var(--primary); margin-bottom: 1rem;">Features</h5>
+                    <div class="footer-links">
+                        <a href="#">Meal Planner</a>
+                        <a href="#">Recipe Generator</a>
+                        <a href="#">Nutrition Tracker</a>
+                        <a href="#">Shopping Lists</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <h5 style="color: var(--primary); margin-bottom: 1rem;">Resources</h5>
+                    <div class="footer-links">
+                        <a href="#">Blog</a>
+                        <a href="#">Help Center</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center" style="color: rgba(240, 237, 234, 0.5); margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                &copy; 2025 DishGennie. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Function to calculate total calories for a day
+        function calculateDayCalories(day) {
+            const card = document.getElementById(`${day}-card`);
+            const calorieInputs = card.querySelectorAll('.calorie-input');
+            
+            let total = 0;
+            let mealsCount = 0;
+            
+            calorieInputs.forEach(input => {
+                const value = parseInt(input.value) || 0;
+                total += value;
+                if (value > 0) {
+                    mealsCount++;
+                }
+            });
+            
+            // Update the total display
+            const totalElement = document.getElementById(`${day}-total`);
+            totalElement.textContent = total.toLocaleString();
+            
+            // Update the meals planned count
+            const mealsElement = card.querySelector('.nutrition-info .calorie-count:last-child');
+            mealsElement.textContent = mealsCount;
+            
+            // Show the nutrition info section
+            const nutritionInfo = document.getElementById(`${day}-nutrition`);
+            nutritionInfo.classList.add('show');
+            
+            // Update the button state
+            const planBtn = card.querySelector('.plan-btn');
+            planBtn.innerHTML = '<i class="fas fa-check"></i> Planned';
+            planBtn.classList.remove('planning');
+            planBtn.classList.add('planned');
+            
+            return total;
+        }
+        
+        // Function to update weekly summary
+        function updateWeeklySummary() {
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            let weeklyTotal = 0;
+            let daysPlanned = 0;
+            let totalMeals = 0;
+            
+            days.forEach(day => {
+                const totalElement = document.getElementById(`${day}-total`);
+                const total = parseInt(totalElement.textContent.replace(',', '')) || 0;
+                
+                if (total > 0) {
+                    weeklyTotal += total;
+                    daysPlanned++;
+                }
+                
+                // Count meals for this day
+                const card = document.getElementById(`${day}-card`);
+                const calorieInputs = card.querySelectorAll('.calorie-input');
+                calorieInputs.forEach(input => {
+                    if ((parseInt(input.value) || 0) > 0) {
+                        totalMeals++;
+                    }
+                });
+            });
+            
+            // Update weekly summary
+            document.getElementById('weekly-total').textContent = weeklyTotal.toLocaleString();
+            document.getElementById('weekly-average').textContent = daysPlanned > 0 ? 
+                Math.round(weeklyTotal / daysPlanned).toLocaleString() : '0';
+            document.getElementById('meals-planned').textContent = totalMeals;
+            document.getElementById('days-planned').textContent = daysPlanned;
+        }
+        
+        // Add event listeners to all Plan buttons
+        document.querySelectorAll('.plan-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const day = this.getAttribute('data-day');
+                
+                // Show planning animation
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Planning...';
+                this.classList.add('planning');
+                
+                // Simulate a short delay for calculation
+                setTimeout(() => {
+                    calculateDayCalories(day);
+                    updateWeeklySummary();
+                }, 500);
+            });
+        });
+        
+        // Add event listener to "Plan All Days" button
+        document.getElementById('plan-all-btn').addEventListener('click', function() {
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            const originalText = this.innerHTML;
+            
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Planning All...';
+            this.disabled = true;
+            
+            let completed = 0;
+            days.forEach(day => {
+                setTimeout(() => {
+                    calculateDayCalories(day);
+                    completed++;
+                    
+                    if (completed === days.length) {
+                        updateWeeklySummary();
+                        this.innerHTML = '<i class="fas fa-check"></i> All Planned!';
+                        
+                        setTimeout(() => {
+                            this.innerHTML = originalText;
+                            this.disabled = false;
+                        }, 2000);
+                    }
+                }, 300 * completed);
+            });
+        });
+        
+        // Save plan button functionality
+        document.getElementById('save-plan-btn').addEventListener('click', function() {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-check"></i> Saved!';
+            this.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)';
+            
+            setTimeout(() => {
+                this.innerHTML = originalText;
+                this.style.background = '';
+            }, 2000);
+        });
+        
+        // Shopping list button functionality
+        document.getElementById('shopping-list-btn').addEventListener('click', function() {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-check"></i> Generated!';
+            this.style.background = 'linear-gradient(135deg, #2196F3, #0D47A1)';
+            
+            setTimeout(() => {
+                this.innerHTML = originalText;
+                this.style.background = '';
+            }, 2000);
+            
+            alert('Shopping list generated successfully! In a real application, this would generate a downloadable shopping list based on your meal plan.');
+        });
+        
+        // Auto-calculate when calorie inputs change
+        document.querySelectorAll('.calorie-input').forEach(input => {
+            input.addEventListener('input', function() {
+                // Get the day from the parent card
+                const card = this.closest('.meal-plan-card');
+                const dayId = card.id.replace('-card', '');
+                
+                // If the day has already been planned, update the total
+                const planBtn = card.querySelector('.plan-btn');
+                if (planBtn.classList.contains('planned')) {
+                    calculateDayCalories(dayId);
+                    updateWeeklySummary();
+                }
+            });
+        });
+        
+        // Initialize with Monday planned as an example
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-plan Monday on page load as example
+            setTimeout(() => {
+                const mondayBtn = document.querySelector('[data-day="monday"]');
+                mondayBtn.click();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

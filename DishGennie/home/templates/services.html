@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services | DishGennie</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --text: #f0edea;
+            --background: #120d09;
+            --primary: #debd9d;
+            --secondary: #8c541c;
+            --accent: #eb8c2d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            --radius: 12px;
+            --card-bg: #1c1611;
+            --border: rgba(140, 84, 28, 0.3);
+            --light-bg: #241c15;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: rgba(18, 13, 9, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 0;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        
+        .navbar.scrolled {
+            padding: 0.8rem 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .navbar-brand i {
+            color: var(--accent);
+        }
+        
+        .nav-link {
+            color: var(--text) !important;
+            font-weight: 500;
+            margin: 0 0.3rem;
+            padding: 0.5rem 1.2rem !important;
+            border-radius: 30px;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary) !important;
+            background-color: rgba(222, 189, 157, 0.1);
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 70%;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            padding: 120px 0 80px;
+            background: linear-gradient(rgba(18, 13, 9, 0.9), rgba(18, 13, 9, 0.95)), url('https://images.unsplash.com/photo-1490818387583-1baba5e638af?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text);
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+        
+        .hero-cta {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary, .btn-outline {
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border: none;
+            color: var(--background);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(235, 140, 45, 0.3);
+            color: var(--background);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(235, 140, 45, 0.1);
+            transform: translateY(-3px);
+            color: var(--accent);
+        }
+        
+        /* Services Section */
+        .services-section {
+            padding: 100px 0;
+            background-color: var(--light-bg);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-size: 2.8rem;
+            font-weight: 800;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            margin: 15px auto 30px;
+            border-radius: 2px;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: rgba(240, 237, 234, 0.8);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 3.5rem;
+        }
+        
+        .service-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2.5rem 1.8rem;
+            height: 100%;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent), var(--secondary));
+            transition: width 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+            border-color: rgba(235, 140, 45, 0.5);
+        }
+        
+        .service-card:hover::before {
+            width: 8px;
+        }
+        
+        .service-icon {
+            font-size: 3.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+            display: inline-block;
+            padding: 15px;
+            background: rgba(235, 140, 45, 0.1);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .service-desc {
+            color: rgba(240, 237, 234, 0.8);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+        
+        .service-features {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 1.8rem;
+        }
+        
+        .service-features li {
+            margin-bottom: 8px;
+            color: rgba(240, 237, 234, 0.7);
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .service-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .service-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+        
+        .service-link:hover {
+            color: var(--primary);
+            gap: 12px;
+        }
+        
+        /* How It Works Section */
+        .how-it-works {
+            padding: 100px 0;
+            background-color: var(--background);
+        }
+        
+        .step-card {
+            background-color: var(--light-bg);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            height: 100%;
+            border: 1px solid var(--border);
+            position: relative;
+            transition: var(--transition);
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: var(--background);
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-radius: 50%;
+            margin-bottom: 1.5rem;
+        }
+        
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        /* Features Showcase Section */
+        .features-showcase {
+            padding: 100px 0;
+            background-color: var(--light-bg);
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2.5rem;
+        }
+        
+        .feature-icon {
+            flex-shrink: 0;
+            width: 70px;
+            height: 70px;
+            background: rgba(235, 140, 45, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            color: var(--accent);
+            font-size: 1.8rem;
+        }
+        
+        .feature-content h4 {
+            font-size: 1.4rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-content p {
+            color: rgba(240, 237, 234, 0.8);
+        }
+        
+        /* Testimonials Section */
+        .testimonials-section {
+            padding: 100px 0;
+            background-color: var(--background);
+        }
+        
+        .testimonial-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2rem;
+            border: 1px solid var(--border);
+            height: 100%;
+            position: relative;
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 5rem;
+            color: rgba(235, 140, 45, 0.1);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .testimonial-text {
+            color: rgba(240, 237, 234, 0.9);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--background);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .author-info h5 {
+            color: var(--primary);
+            margin-bottom: 0.2rem;
+            font-size: 1.1rem;
+        }
+        
+        .author-info p {
+            color: rgba(240, 237, 234, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(rgba(18, 13, 9, 0.9), rgba(18, 13, 9, 0.95)), url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+        }
+        
+        .cta-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .cta-subtitle {
+            font-size: 1.2rem;
+            color: rgba(240, 237, 234, 0.9);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+        
+        .cta-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: rgba(240, 237, 234, 0.8);
+            font-size: 1rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--card-bg);
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-brand i {
+            color: var(--accent);
+        }
+        
+        .footer-description {
+            color: rgba(240, 237, 234, 0.7);
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-heading {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(240, 237, 234, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background-color: rgba(140, 84, 28, 0.2);
+            color: var(--accent);
+            border-radius: 50%;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background-color: var(--accent);
+            color: var(--background);
+            transform: translateY(-5px);
+        }
+        
+        .footer-bottom {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: rgba(240, 237, 234, 0.6);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.3rem;
+            }
+            
+            .cta-title {
+                font-size: 2.3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.9rem;
+            }
+            
+            .cta-title {
+                font-size: 2rem;
+            }
+            
+            .service-card, .step-card, .testimonial-card {
+                padding: 1.8rem 1.2rem;
+            }
+            
+            .feature-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .feature-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-primary, .btn-outline {
+                width: 100%;
+                max-width: 280px;
+            }
+            
+            .hero-section, .services-section, .how-it-works, .features-showcase, .testimonials-section, .cta-section {
+                padding: 70px 0;
+            }
+            
+            .cta-stats {
+                gap: 25px;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-utensils"></i> DishGennie
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about/">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/service/">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contactus/">Contact</a>
+                    </li>
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <a class="btn btn-primary" href="/signup/">Get Started</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title animate__animated animate__fadeInDown">Transform Your Cooking Experience</h1>
+            <p class="hero-subtitle animate__animated animate__fadeInUp animate__delay-1s">
+                DishGennie combines AI intelligence with culinary expertise to make meal planning effortless, enjoyable, and perfectly tailored to your needs.
+            </p>
+            <div class="hero-cta animate__animated animate__fadeInUp animate__delay-2s">
+                <a href="#services" class="btn btn-primary">Explore Services</a>
+                <a href="/signup/" class="btn btn-outline">Start Free Trial</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <h2 class="section-title fade-in">Our Services</h2>
+            <p class="section-subtitle fade-in">
+                Discover everything DishGennie offers to make your cooking experience smart, efficient, and delightful.
+            </p>
+            
+            <div class="row g-4 justify-content-center">
+                <!-- Service 1 -->
+                <div class="col-md-6 col-lg-4 fade-in">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <h3 class="service-title">AI Recipe Generator</h3>
+                        <p class="service-desc">
+                            Instantly get delicious recipes based on ingredients in your kitchen, dietary needs, mood, or cuisine preferences.
+                        </p>
+                        <ul class="service-features">
+                            <li>Personalized recipe suggestions</li>
+                            <li>Ingredient substitution options</li>
+                            <li>Dietary restriction filtering</li>
+                            <li>Cuisine style selection</li>
+                        </ul>
+                        <a href="#" class="service-link">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="col-md-6 col-lg-4 fade-in">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3 class="service-title">Smart Meal Planning</h3>
+                        <p class="service-desc">
+                            Plan weekly meals, save time, and enjoy balanced nutrition with personalized meal schedules.
+                        </p>
+                        <ul class="service-features">
+                            <li>Automated weekly meal plans</li>
+                            <li>Nutritionally balanced options</li>
+                            <li>Shopping list integration</li>
+                            <li>Family size customization</li>
+                        </ul>
+                        <a href="#" class="service-link">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Service 3 -->
+                <div class="col-md-6 col-lg-4 fade-in">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h3 class="service-title">Nutrition & Calorie Counter</h3>
+                        <p class="service-desc">
+                            Stay healthy with our nutrition analysis tool. Track calories, macros, and set fitness goals.
+                        </p>
+                        <ul class="service-features">
+                            <li>Detailed nutritional breakdown</li>
+                            <li>Macro & micronutrient tracking</li>
+                            <li>Personalized fitness goals</li>
+                            <li>Real-time dietary insights</li>
+                        </ul>
+                        <a href="#" class="service-link">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Service 4 -->
+                <div class="col-md-6 col-lg-4 fade-in">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="service-title">Community & Sharing</h3>
+                        <p class="service-desc">
+                            Connect with food lovers, share recipes, join cooking contests, and get feedback from our community.
+                        </p>
+                        <ul class="service-features">
+                            <li>Recipe sharing platform</li>
+                            <li>Cooking challenges & contests</li>
+                            <li>Expert feedback system</li>
+                            <li>Personal food blog</li>
+                        </ul>
+                        <a href="#" class="service-link">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Service 5 -->
+                <div class="col-md-6 col-lg-4 fade-in">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-shopping-basket"></i>
+                        </div>
+                        <h3 class="service-title">Smart Shopping Manager</h3>
+                        <p class="service-desc">
+                            Automatically create and adjust shopping lists based on planned recipes and pantry stock.
+                        </p>
+                        <ul class="service-features">
+                            <li>Automated shopping lists</li>
+                            <li>Pantry inventory tracking</li>
+                            <li>Price comparison tool</li>
+                            <li>Store navigation features</li>
+                        </ul>
+                        <a href="#" class="service-link">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Service 6: New Service -->
+                <div class="col-md-6 col-lg-4 fade-in">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="service-title">Cooking Academy</h3>
+                        <p class="service-desc">
+                            Master culinary skills with step-by-step video tutorials and interactive cooking lessons.
+                        </p>
+                        <ul class="service-features">
+                            <li>Video tutorials by chefs</li>
+                            <li>Skill-based learning paths</li>
+                            <li>Interactive cooking challenges</li>
+                            <li>Certificate of completion</li>
+                        </ul>
+                        <a href="#" class="service-link">
+                            Learn More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title fade-in">How DishGennie Works</h2>
+            <p class="section-subtitle fade-in">
+                Get started in just four simple steps to transform your cooking and meal planning experience.
+            </p>
+            
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-6 col-lg-3 fade-in">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Sign Up</h3>
+                        <p>Create your free account and set up your dietary preferences, restrictions, and goals.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3 fade-in">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Set Preferences</h3>
+                        <p>Tell us about your cooking skills, available time, and the types of meals you enjoy.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3 fade-in">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Generate Plans</h3>
+                        <p>Let our AI create personalized meal plans and recipes tailored just for you.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-3 fade-in">
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h3 class="step-title">Cook & Enjoy</h3>
+                        <p>Follow step-by-step instructions, track nutrition, and share your culinary creations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Showcase Section -->
+    <section class="features-showcase">
+        <div class="container">
+            <h2 class="section-title fade-in">Why Choose DishGennie</h2>
+            <p class="section-subtitle fade-in">
+                We combine cutting-edge technology with culinary expertise to deliver an unmatched cooking experience.
+            </p>
+            
+            <div class="row">
+                <div class="col-lg-6 fade-in">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h4>AI-Powered Intelligence</h4>
+                            <p>Our advanced algorithms learn your preferences over time to suggest recipes you'll love.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Personalized For Everyone</h4>
+                            <p>Whether you're cooking for one or a family of six, we tailor plans to your specific needs.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Data Privacy & Security</h4>
+                            <p>Your personal information and food preferences are encrypted and never shared with third parties.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 fade-in">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Continuous Updates</h4>
+                            <p>We regularly add new recipes, features, and improvements based on user feedback.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h4>Multi-Platform Access</h4>
+                            <p>Access your meal plans and recipes on web, iOS, and Android devices seamlessly.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div class="feature-content">
+                            <h4>24/7 Support</h4>
+                            <p>Our culinary experts and support team are always available to help you with any questions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title fade-in">What Our Users Say</h2>
+            <p class="section-subtitle fade-in">
+                Join thousands of home cooks who have transformed their cooking experience with DishGennie.
+            </p>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4 fade-in">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">
+                            "DishGennie has completely changed how I cook. The AI suggestions are spot on, and I've discovered so many new recipes I love!"
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">S</div>
+                            <div class="author-info">
+                                <h5>Sarah Johnson</h5>
+                                <p>Home Cook, 2 years with DishGennie</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4 fade-in">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">
+                            "As a busy mom, meal planning used to be stressful. Now with DishGennie, I save hours each week and my family eats healthier."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">M</div>
+                            <div class="author-info">
+                                <h5>Michael Rodriguez</h5>
+                                <p>Father of Three, 1 year with DishGennie</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4 fade-in">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">
+                            "The nutrition tracking helped me lose 15 pounds! I love how easy it is to stay on track with my fitness goals while enjoying delicious food."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">E</div>
+                            <div class="author-info">
+                                <h5>Emily Chen</h5>
+                                <p>Fitness Enthusiast, 8 months with DishGennie</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title fade-in">Ready to Transform Your Cooking?</h2>
+            <p class="cta-subtitle fade-in">
+                Join thousands of home cooks who have made meal planning effortless and cooking enjoyable with DishGennie.
+            </p>
+            <div class="hero-cta fade-in">
+                <a href="/signup/" class="btn btn-primary">Start Your Free Trial</a>
+                <a href="/contactus/" class="btn btn-outline">Contact Sales</a>
+            </div>
+            
+            <div class="cta-stats fade-in">
+                <div class="stat-item">
+                    <span class="stat-number">50,000+</span>
+                    <span class="stat-label">Happy Users</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">500K+</span>
+                    <span class="stat-label">Recipes Generated</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">98%</span>
+                    <span class="stat-label">Satisfaction Rate</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Support Available</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand">
+                        <i class="fas fa-utensils"></i> DishGennie
+                    </div>
+                    <p class="footer-description">
+                        Your personal AI-powered meal planning companion. Making cooking fun, easy, and personalized for everyone.
+                    </p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="footer-heading">Company</h5>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about/">About Us</a></li>
+                        <li><a href="/service/">Services</a></li>
+                        <li><a href="/contactus/">Contact</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-heading">Features</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">AI Recipe Generator</a></li>
+                        <li><a href="#">Meal Planner</a></li>
+                        <li><a href="#">Nutrition Tracker</a></li>
+                        <li><a href="#">Shopping Lists</a></li>
+                        <li><a href="#">Cooking Academy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-heading">Resources</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 DishGennie. All Rights Reserved. Made with <i class="fas fa-heart" style="color: var(--accent);"></i> for food lovers everywhere.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Fade-in animation on scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInOnScroll = function() {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        };
+        
+        // Check on load and scroll
+        window.addEventListener('load', fadeInOnScroll);
+        window.addEventListener('scroll', fadeInOnScroll);
+        
+        // Initialize - trigger once on load
+        fadeInOnScroll();
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

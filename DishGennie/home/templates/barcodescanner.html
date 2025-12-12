@@ -1,0 +1,1940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Scanner | DishGennie</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        :root {
+            --text: #f0edea;
+            --background: #120d09;
+            --primary: #debd9d;
+            --secondary: #8c541c;
+            --accent: #eb8c2d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            --radius: 12px;
+            --card-bg: #1c1611;
+            --border: rgba(140, 84, 28, 0.3);
+            --light-bg: #241c15;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --error: #F44336;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: rgba(18, 13, 9, 0.95);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .navbar-brand i {
+            color: var(--accent);
+        }
+        
+        .nav-link {
+            color: var(--text) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 30px;
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary) !important;
+            background-color: rgba(222, 189, 157, 0.1);
+        }
+        
+        /* Hero Section */
+        .scanner-hero {
+            padding: 120px 0 60px;
+            background: linear-gradient(rgba(18, 13, 9, 0.9), rgba(18, 13, 9, 0.95));
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scanner-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1559056199-641a0ac8b55e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .hero-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(240, 237, 234, 0.9);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+        
+        /* Main Content */
+        .scanner-section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-size: 2.8rem;
+            font-weight: 800;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            margin: 15px auto 30px;
+            border-radius: 2px;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: rgba(240, 237, 234, 0.8);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 3.5rem;
+        }
+        
+        /* Scanner Container */
+        .scanner-container {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scanner-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .scanner-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0;
+        }
+        
+        .scanner-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .scanner-view {
+            min-height: 400px;
+            background-color: var(--light-bg);
+            border-radius: var(--radius);
+            border: 2px dashed var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scanner-view.active {
+            border-color: var(--accent);
+        }
+        
+        #reader {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            position: relative;
+        }
+        
+        .scanner-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: rgba(240, 237, 234, 0.6);
+            width: 100%;
+            padding: 2rem;
+        }
+        
+        .scanner-placeholder i {
+            font-size: 5rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        
+        .scanner-placeholder h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        /* Scanner Controls */
+        .scanner-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border: none;
+            color: var(--background);
+            padding: 0.9rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            min-width: 180px;
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(235, 140, 45, 0.3);
+        }
+        
+        .control-btn.secondary {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+        
+        .control-btn.success {
+            background: linear-gradient(135deg, var(--success), #2E7D32);
+        }
+        
+        .control-btn.error {
+            background: linear-gradient(135deg, var(--error), #C62828);
+        }
+        
+        .control-btn.capture {
+            background: linear-gradient(135deg, #2196F3, #0D47A1);
+        }
+        
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        /* Scanner Status */
+        .scanner-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(28, 22, 17, 0.5);
+            border-radius: var(--radius);
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--warning);
+            animation: pulse 2s infinite;
+        }
+        
+        .status-indicator.ready {
+            background-color: var(--success);
+            animation: none;
+        }
+        
+        .status-indicator.scanning {
+            background-color: var(--accent);
+            animation: pulse 1s infinite;
+        }
+        
+        .status-text {
+            color: rgba(240, 237, 234, 0.9);
+            font-weight: 500;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        /* Captured Photo Area */
+        .captured-photo-area {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .captured-photo-area.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .photo-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .photo-container {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .photo-preview {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+        }
+        
+        .photo-preview img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius);
+            border: 2px solid var(--border);
+        }
+        
+        .photo-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .nutrition-table-container {
+            margin-top: 2rem;
+        }
+        
+        .nutrition-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--light-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        
+        .nutrition-table th {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: var(--background);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .nutrition-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            color: rgba(240, 237, 234, 0.9);
+        }
+        
+        .nutrition-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .nutrition-table tr:hover {
+            background: rgba(235, 140, 45, 0.05);
+        }
+        
+        .nutrient-value {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .nutrient-progress {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .nutrient-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(28, 22, 17, 0.7);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .nutrient-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--secondary));
+            border-radius: 4px;
+        }
+        
+        /* Product Results */
+        .product-results {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .product-results.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .product-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        
+        .product-image {
+            width: 150px;
+            height: 150px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background-color: var(--light-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .product-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-brand {
+            color: rgba(240, 237, 234, 0.8);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .product-barcode {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(235, 140, 45, 0.1);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-family: monospace;
+            font-weight: 600;
+        }
+        
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .nutrition-card {
+            background-color: var(--light-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .nutrition-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .nutrition-label {
+            color: rgba(240, 237, 234, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .nutrition-unit {
+            color: rgba(240, 237, 234, 0.6);
+            font-size: 0.85rem;
+        }
+        
+        /* Manual Entry */
+        .manual-entry {
+            background-color: var(--light-bg);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .form-control {
+            background-color: rgba(28, 22, 17, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            padding: 0.75rem 1rem;
+            width: 100%;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(235, 140, 45, 0.1);
+        }
+        
+        .form-control::placeholder {
+            color: rgba(240, 237, 234, 0.5);
+        }
+        
+        .nutrition-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        /* Recent Scans */
+        .recent-scans {
+            background-color: var(--light-bg);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+        
+        .scans-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .scans-list {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .scan-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .scan-item:hover {
+            transform: translateX(5px);
+            border-color: rgba(235, 140, 45, 0.5);
+        }
+        
+        .scan-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: var(--background);
+            font-size: 1.2rem;
+        }
+        
+        .scan-info {
+            flex: 1;
+        }
+        
+        .scan-name {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        
+        .scan-details {
+            color: rgba(240, 237, 234, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        .scan-calories {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        /* Scanner Tips */
+        .scanner-tips {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .tip-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(28, 22, 17, 0.5);
+            border-radius: var(--radius);
+        }
+        
+        .tip-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(235, 140, 45, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        
+        .tip-title {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--card-bg);
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 3rem;
+        }
+        
+        .footer-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-brand i {
+            color: var(--accent);
+        }
+        
+        .footer-description {
+            color: rgba(240, 237, 234, 0.7);
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-heading {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(240, 237, 234, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background-color: rgba(140, 84, 28, 0.2);
+            color: var(--accent);
+            border-radius: 50%;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background-color: var(--accent);
+            color: var(--background);
+            transform: translateY(-5px);
+        }
+        
+        .footer-bottom {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: rgba(240, 237, 234, 0.6);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .scanner-hero {
+                padding: 100px 0 50px;
+            }
+            
+            .scanner-section {
+                padding: 60px 0;
+            }
+            
+            .product-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .photo-container {
+                flex-direction: column;
+            }
+            
+            .photo-preview, .photo-info {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 1.9rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 2.5rem;
+            }
+            
+            .scanner-container, .captured-photo-area, .product-results, .manual-entry, .recent-scans, .scanner-tips {
+                padding: 1.5rem;
+            }
+            
+            .scanner-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .control-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .scanner-view {
+                min-height: 300px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 1.9rem;
+                margin-bottom: 1rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
+                margin-bottom: 1rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .scanner-hero {
+                padding: 80px 0 40px;
+            }
+            
+            .scanner-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .scanner-actions {
+                width: 100%;
+            }
+            
+            .nutrition-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nutrition-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        /* Custom Scanner Styling */
+        #html5-qrcode-anchor-scan-type-change {
+            display: none !important;
+        }
+        
+        #html5qr-code-full-region {
+            border: none !important;
+        }
+        
+        #html5-qrcode-button-camera-stop, 
+        #html5-qrcode-button-camera-start,
+        #html5-qrcode-button-file-selection {
+            background: linear-gradient(135deg, var(--accent), var(--secondary)) !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 30px !important;
+            padding: 10px 20px !important;
+            font-weight: 600 !important;
+            margin: 5px !important;
+        }
+        
+        /* Video Styling */
+        video {
+            width: 100% !important;
+            height: auto !important;
+            border-radius: var(--radius);
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .capture-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+        
+        .capture-frame {
+            width: 80%;
+            height: 60%;
+            border: 3px solid var(--accent);
+            border-radius: var(--radius);
+            box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-utensils"></i> DishGennie
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about/">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/service/">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/barcode-scanner/">Barcode Scanner</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/nutrition-tracker/">Nutrition Tracker</a>
+                    </li>
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <a class="btn control-btn" href="/signup/">Get Started</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="scanner-hero">
+        <div class="container">
+            <h1 class="hero-title">Scan & Track Nutrition Instantly</h1>
+            <p class="hero-subtitle">
+                Scan any food product barcode or capture food photos to automatically analyze nutrition information. Save time and ensure accurate tracking with our smart scanner.
+            </p>
+        </div>
+    </section>
+
+    <!-- Scanner Section -->
+    <section class="scanner-section">
+        <div class="container">
+            <h2 class="section-title">Smart Food Scanner</h2>
+            <p class="section-subtitle">
+                Scan barcodes or capture food photos to instantly get nutrition information and add it to your food log.
+            </p>
+            
+            <!-- Scanner Container -->
+            <div class="scanner-container">
+                <div class="scanner-header">
+                    <h3 class="scanner-title">Scan Food Products</h3>
+                    <div class="scanner-actions">
+                        <button class="control-btn" id="startScannerBtn">
+                            <i class="fas fa-camera"></i> Start Scanner
+                        </button>
+                        <button class="control-btn capture" id="capturePhotoBtn">
+                            <i class="fas fa-camera-retro"></i> Capture Photo
+                        </button>
+                        <button class="control-btn secondary" id="uploadBarcodeBtn">
+                            <i class="fas fa-upload"></i> Upload Image
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="scanner-view" id="scannerView">
+                    <div class="scanner-placeholder" id="scannerPlaceholder">
+                        <i class="fas fa-barcode"></i>
+                        <h3>Ready to Scan</h3>
+                        <p>Click "Start Scanner" to scan barcodes or "Capture Photo" to take food pictures</p>
+                        <p style="font-size: 0.9rem; margin-top: 1rem; color: rgba(240, 237, 234, 0.5);">
+                            Supports barcode scanning and AI-powered food recognition
+                        </p>
+                    </div>
+                    <div id="reader"></div>
+                    <div class="video-container" id="videoContainer" style="display: none;">
+                        <video id="cameraFeed" autoplay playsinline></video>
+                        <div class="capture-overlay" id="captureOverlay" style="display: none;">
+                            <div class="capture-frame"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scanner-controls">
+                    <button class="control-btn" id="stopScannerBtn" disabled>
+                        <i class="fas fa-stop"></i> Stop Scanner
+                    </button>
+                    <button class="control-btn success" id="analyzePhotoBtn" style="display: none;">
+                        <i class="fas fa-search"></i> Analyze Photo
+                    </button>
+                    <button class="control-btn secondary" id="clearScannerBtn">
+                        <i class="fas fa-redo"></i> Clear Scanner
+                    </button>
+                </div>
+                
+                <div class="scanner-status">
+                    <div class="status-indicator" id="statusIndicator"></div>
+                    <div class="status-text" id="statusText">Scanner is ready</div>
+                </div>
+            </div>
+            
+            <!-- Captured Photo Area -->
+            <div class="captured-photo-area" id="capturedPhotoArea">
+                <div class="photo-header">
+                    <h3 style="color: var(--primary); margin-bottom: 0;">Captured Food Photo</h3>
+                    <button class="control-btn secondary" id="retakePhotoBtn">
+                        <i class="fas fa-retweet"></i> Retake Photo
+                    </button>
+                </div>
+                
+                <div class="photo-container">
+                    <div class="photo-preview">
+                        <img id="capturedImage" src="" alt="Captured Food Photo">
+                        <div style="margin-top: 1rem; text-align: center;">
+                            <button class="control-btn capture" id="analyzeWithAI">
+                                <i class="fas fa-brain"></i> Analyze with AI
+                            </button>
+                        </div>
+                    </div>
+                    <div class="photo-info">
+                        <h4 style="color: var(--primary); margin-bottom: 1rem;">Photo Analysis Results</h4>
+                        <div id="photoAnalysisStatus" style="color: rgba(240, 237, 234, 0.8); margin-bottom: 1rem;">
+                            Click "Analyze with AI" to identify food items and nutrition information.
+                        </div>
+                        <div class="nutrition-table-container">
+                            <table class="nutrition-table" id="nutritionTable">
+                                <thead>
+                                    <tr>
+                                        <th>Nutrient</th>
+                                        <th>Amount</th>
+                                        <th>Daily Value</th>
+                                        <th>Progress</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="nutritionTableBody">
+                                    <!-- Nutrition data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scanner-controls" style="margin-top: 2rem;">
+                    <button class="control-btn success" id="addPhotoToLogBtn">
+                        <i class="fas fa-plus-circle"></i> Add to Food Log
+                    </button>
+                    <button class="control-btn" id="savePhotoProductBtn">
+                        <i class="fas fa-save"></i> Save Product
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Product Results -->
+            <div class="product-results" id="productResults">
+                <div class="product-header">
+                    <div class="product-image" id="productImage">
+                        <i class="fas fa-image" style="font-size: 3rem; color: rgba(240, 237, 234, 0.3);"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name" id="productName">Product Name</h3>
+                        <div class="product-brand" id="productBrand">Brand Name</div>
+                        <div class="product-barcode" id="productBarcode">
+                            <i class="fas fa-barcode"></i>
+                            <span id="barcodeNumber">0000000000000</span>
+                        </div>
+                        <div style="margin-top: 1rem; color: rgba(240, 237, 234, 0.8);" id="productDescription">
+                            Product description will appear here after scanning.
+                        </div>
+                    </div>
+                    <div>
+                        <button class="control-btn success" id="saveProductBtn">
+                            <i class="fas fa-save"></i> Save Product
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="nutrition-grid">
+                    <div class="nutrition-card">
+                        <div class="nutrition-value" id="caloriesValue">0</div>
+                        <div class="nutrition-label">Calories</div>
+                        <div class="nutrition-unit">per serving</div>
+                    </div>
+                    <div class="nutrition-card">
+                        <div class="nutrition-value" id="proteinValue">0g</div>
+                        <div class="nutrition-label">Protein</div>
+                        <div class="nutrition-unit">per serving</div>
+                    </div>
+                    <div class="nutrition-card">
+                        <div class="nutrition-value" id="carbsValue">0g</div>
+                        <div class="nutrition-label">Carbohydrates</div>
+                        <div class="nutrition-unit">per serving</div>
+                    </div>
+                    <div class="nutrition-card">
+                        <div class="nutrition-value" id="fatValue">0g</div>
+                        <div class="nutrition-label">Fat</div>
+                        <div class="nutrition-unit">per serving</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <h4 style="color: var(--primary); margin-bottom: 1rem;">Nutrition Details</h4>
+                    <div style="color: rgba(240, 237, 234, 0.8); line-height: 1.8;" id="nutritionDetails">
+                        Detailed nutrition information will appear here after scanning.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Scans -->
+            <div class="recent-scans">
+                <div class="scans-header">
+                    <h3 style="color: var(--primary); margin-bottom: 0;">Recently Scanned Foods</h3>
+                    <button class="control-btn secondary" id="clearHistoryBtn">
+                        <i class="fas fa-trash"></i> Clear History
+                    </button>
+                </div>
+                <div class="scans-list" id="scansList">
+                    <!-- Recent scans will be dynamically added here -->
+                </div>
+            </div>
+            
+            <!-- Scanner Tips -->
+            <div class="scanner-tips">
+                <h3 style="color: var(--primary); margin-bottom: 0;">Tips for Better Scanning</h3>
+                <p style="color: rgba(240, 237, 234, 0.8); margin-top: 0.5rem;">Follow these tips for the best scanning experience</p>
+                
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="tip-title">Good Lighting</div>
+                        <p style="color: rgba(240, 237, 234, 0.8); font-size: 0.9rem;">
+                            Ensure adequate lighting for clear barcode recognition
+                        </p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-ruler"></i>
+                        </div>
+                        <div class="tip-title">Proper Distance</div>
+                        <p style="color: rgba(240, 237, 234, 0.8); font-size: 0.9rem;">
+                            Hold device 6-12 inches from the barcode for optimal focus
+                        </p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-hand-holding"></i>
+                        </div>
+                        <div class="tip-title">Steady Hands</div>
+                        <p style="color: rgba(240, 237, 234, 0.8); font-size: 0.9rem;">
+                            Keep your hands steady to prevent blurry camera input
+                        </p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="tip-title">Large Database</div>
+                        <p style="color: rgba(240, 237, 234, 0.8); font-size: 0.9rem;">
+                            Access to 1M+ products from Open Food Facts database
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand">
+                        <i class="fas fa-utensils"></i> DishGennie
+                    </div>
+                    <p class="footer-description">
+                        Your personal AI-powered meal planning companion. Making cooking fun, easy, and personalized for everyone.
+                    </p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="footer-heading">Company</h5>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about/">About Us</a></li>
+                        <li><a href="/service/">Services</a></li>
+                        <li><a href="/barcode-scanner/">Barcode Scanner</a></li>
+                        <li><a href="/contactus/">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-heading">Features</h5>
+                    <ul class="footer-links">
+                        <li><a href="/meal-planner/">Meal Planner</a></li>
+                        <li><a href="/recipes/">Recipe Generator</a></li>
+                        <li><a href="/nutrition-tracker/">Nutrition Tracker</a></li>
+                        <li><a href="/barcode-scanner/">Barcode Scanner</a></li>
+                        <li><a href="/shopping/">Shopping Lists</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-heading">Resources</h5>
+                    <ul class="footer-links">
+                        <li><a href="/blog/">Blog</a></li>
+                        <li><a href="/help/">Help Center</a></li>
+                        <li><a href="/privacy/">Privacy Policy</a></li>
+                        <li><a href="/terms/">Terms of Service</a></li>
+                        <li><a href="/cookies/">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 DishGennie. All Rights Reserved. Made with <i class="fas fa-heart" style="color: var(--accent);"></i> for food lovers everywhere.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Global variables
+        let scanner = null;
+        let currentProduct = null;
+        let scanHistory = JSON.parse(localStorage.getItem('dishgennieScanHistory')) || [];
+        let mediaStream = null;
+        let capturedImageData = null;
+        
+        // DOM Elements
+        const startScannerBtn = document.getElementById('startScannerBtn');
+        const stopScannerBtn = document.getElementById('stopScannerBtn');
+        const capturePhotoBtn = document.getElementById('capturePhotoBtn');
+        const uploadBarcodeBtn = document.getElementById('uploadBarcodeBtn');
+        const analyzePhotoBtn = document.getElementById('analyzePhotoBtn');
+        const clearScannerBtn = document.getElementById('clearScannerBtn');
+        const capturedPhotoArea = document.getElementById('capturedPhotoArea');
+        const capturedImage = document.getElementById('capturedImage');
+        const retakePhotoBtn = document.getElementById('retakePhotoBtn');
+        const analyzeWithAI = document.getElementById('analyzeWithAI');
+        const addPhotoToLogBtn = document.getElementById('addPhotoToLogBtn');
+        const savePhotoProductBtn = document.getElementById('savePhotoProductBtn');
+        const photoAnalysisStatus = document.getElementById('photoAnalysisStatus');
+        const nutritionTableBody = document.getElementById('nutritionTableBody');
+        const scannerView = document.getElementById('scannerView');
+        const scannerPlaceholder = document.getElementById('scannerPlaceholder');
+        const videoContainer = document.getElementById('videoContainer');
+        const cameraFeed = document.getElementById('cameraFeed');
+        const captureOverlay = document.getElementById('captureOverlay');
+        const productResults = document.getElementById('productResults');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const scansList = document.getElementById('scansList');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const statusText = document.getElementById('statusText');
+        
+        // Product display elements
+        const productName = document.getElementById('productName');
+        const productBrand = document.getElementById('productBrand');
+        const productBarcode = document.getElementById('barcodeNumber');
+        const productDescription = document.getElementById('productDescription');
+        const productImage = document.getElementById('productImage');
+        const caloriesValue = document.getElementById('caloriesValue');
+        const proteinValue = document.getElementById('proteinValue');
+        const carbsValue = document.getElementById('carbsValue');
+        const fatValue = document.getElementById('fatValue');
+        const nutritionDetails = document.getElementById('nutritionDetails');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateScanHistory();
+            setupEventListeners();
+            loadDemoData();
+        });
+        
+        // Event Listeners
+        function setupEventListeners() {
+            startScannerBtn.addEventListener('click', startScanner);
+            stopScannerBtn.addEventListener('click', stopScanner);
+            capturePhotoBtn.addEventListener('click', startPhotoCapture);
+            uploadBarcodeBtn.addEventListener('click', uploadBarcode);
+            analyzePhotoBtn.addEventListener('click', capturePhoto);
+            clearScannerBtn.addEventListener('click', clearScanner);
+            retakePhotoBtn.addEventListener('click', retakePhoto);
+            analyzeWithAI.addEventListener('click', analyzeFoodWithAI);
+            addPhotoToLogBtn.addEventListener('click', addPhotoToFoodLog);
+            savePhotoProductBtn.addEventListener('click', savePhotoProduct);
+            clearHistoryBtn.addEventListener('click', clearScanHistory);
+        }
+        
+        // Scanner Functions
+        function startScanner() {
+            if (!scanner) {
+                scanner = new Html5Qrcode("reader");
+                
+                const config = {
+                    fps: 10,
+                    qrbox: { width: 250, height: 250 },
+                    rememberLastUsedCamera: true,
+                    supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+                };
+                
+                scanner.start(
+                    { facingMode: "environment" },
+                    config,
+                    onScanSuccess,
+                    onScanError
+                ).then(() => {
+                    scannerView.classList.add('active');
+                    scannerPlaceholder.style.display = 'none';
+                    startScannerBtn.disabled = true;
+                    capturePhotoBtn.disabled = true;
+                    stopScannerBtn.disabled = false;
+                    updateStatus('scanning', 'Scanning for barcodes...');
+                    showNotification('Scanner started successfully!');
+                }).catch(err => {
+                    console.error("Scanner error:", err);
+                    showNotification('Failed to start scanner. Please check camera permissions.', 'error');
+                });
+            }
+        }
+        
+        function stopScanner() {
+            if (scanner) {
+                scanner.stop().then(() => {
+                    scanner = null;
+                    scannerView.classList.remove('active');
+                    scannerPlaceholder.style.display = 'block';
+                    startScannerBtn.disabled = false;
+                    capturePhotoBtn.disabled = false;
+                    stopScannerBtn.disabled = true;
+                    updateStatus('ready', 'Scanner stopped');
+                    showNotification('Scanner stopped');
+                }).catch(err => {
+                    console.error("Stop scanner error:", err);
+                });
+            }
+            stopPhotoCapture();
+        }
+        
+        function onScanSuccess(decodedText, decodedResult) {
+            if (scanner) {
+                stopScanner();
+                fetchProductData(decodedText);
+            }
+        }
+        
+        function onScanError(errorMessage) {
+            // Error handling is optional
+            console.log("Scan error:", errorMessage);
+        }
+        
+        // Photo Capture Functions
+        function startPhotoCapture() {
+            if (scanner) {
+                stopScanner();
+            }
+            
+            navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    facingMode: 'environment',
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                },
+                audio: false 
+            }).then(stream => {
+                mediaStream = stream;
+                cameraFeed.srcObject = stream;
+                videoContainer.style.display = 'block';
+                scannerPlaceholder.style.display = 'none';
+                captureOverlay.style.display = 'flex';
+                analyzePhotoBtn.style.display = 'inline-flex';
+                updateStatus('scanning', 'Ready to capture photo');
+                showNotification('Camera ready. Click "Analyze Photo" to capture.');
+            }).catch(err => {
+                console.error("Camera error:", err);
+                showNotification('Failed to access camera. Please check permissions.', 'error');
+            });
+        }
+        
+        function capturePhoto() {
+            if (!mediaStream) return;
+            
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            
+            // Set canvas dimensions to match video
+            canvas.width = cameraFeed.videoWidth;
+            canvas.height = cameraFeed.videoHeight;
+            
+            // Draw video frame to canvas
+            context.drawImage(cameraFeed, 0, 0, canvas.width, canvas.height);
+            
+            // Get image data
+            capturedImageData = canvas.toDataURL('image/jpeg');
+            capturedImage.src = capturedImageData;
+            
+            // Show captured photo area
+            capturedPhotoArea.classList.add('active');
+            productResults.classList.remove('active');
+            
+            // Stop camera stream
+            stopPhotoCapture();
+            
+            // Update UI
+            analyzePhotoBtn.style.display = 'none';
+            updateStatus('ready', 'Photo captured successfully');
+            showNotification('Photo captured! Click "Analyze with AI" to identify food items.');
+        }
+        
+        function stopPhotoCapture() {
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+            }
+            videoContainer.style.display = 'none';
+            captureOverlay.style.display = 'none';
+            scannerPlaceholder.style.display = 'block';
+            analyzePhotoBtn.style.display = 'none';
+        }
+        
+        function retakePhoto() {
+            capturedPhotoArea.classList.remove('active');
+            clearNutritionTable();
+            startPhotoCapture();
+        }
+        
+        function analyzeFoodWithAI() {
+            if (!capturedImageData) {
+                showNotification('Please capture a photo first.', 'warning');
+                return;
+            }
+            
+            // Show loading state
+            photoAnalysisStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing food with AI...';
+            photoAnalysisStatus.style.color = 'var(--accent)';
+            
+            // Simulate AI analysis (in real implementation, this would call an API)
+            setTimeout(() => {
+                // Demo food detection results
+                const detectedFoods = [
+                    { name: 'Avocado', confidence: 92, calories: 160, protein: 2, carbs: 9, fat: 15 },
+                    { name: 'Whole Wheat Bread', confidence: 88, calories: 69, protein: 3, carbs: 12, fat: 1 },
+                    { name: 'Egg', confidence: 95, calories: 78, protein: 6, carbs: 0.6, fat: 5 }
+                ];
+                
+                // Update status
+                photoAnalysisStatus.innerHTML = `
+                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                    AI detected ${detectedFoods.length} food items with high confidence
+                `;
+                
+                // Calculate total nutrition
+                const totals = {
+                    calories: detectedFoods.reduce((sum, food) => sum + food.calories, 0),
+                    protein: detectedFoods.reduce((sum, food) => sum + food.protein, 0),
+                    carbs: detectedFoods.reduce((sum, food) => sum + food.carbs, 0),
+                    fat: detectedFoods.reduce((sum, food) => sum + food.fat, 0)
+                };
+                
+                // Update nutrition table
+                updateNutritionTable(totals);
+                
+                // Show success notification
+                showNotification(`AI detected ${detectedFoods.length} food items!`, 'success');
+                
+            }, 2000); // Simulate API delay
+        }
+        
+        function updateNutritionTable(nutrition) {
+            // Clear existing table rows
+            nutritionTableBody.innerHTML = '';
+            
+            // Daily value recommendations
+            const dailyValues = {
+                calories: 2000,
+                protein: 50,
+                carbs: 300,
+                fat: 65,
+                fiber: 25,
+                sugar: 25,
+                sodium: 2300
+            };
+            
+            // Nutrition data to display
+            const nutrients = [
+                { name: 'Calories', value: nutrition.calories, unit: 'kcal', daily: dailyValues.calories },
+                { name: 'Protein', value: nutrition.protein, unit: 'g', daily: dailyValues.protein },
+                { name: 'Carbohydrates', value: nutrition.carbs, unit: 'g', daily: dailyValues.carbs },
+                { name: 'Fat', value: nutrition.fat, unit: 'g', daily: dailyValues.fat },
+                { name: 'Fiber', value: 8, unit: 'g', daily: dailyValues.fiber },
+                { name: 'Sugar', value: 4, unit: 'g', daily: dailyValues.sugar },
+                { name: 'Sodium', value: 120, unit: 'mg', daily: dailyValues.sodium }
+            ];
+            
+            // Add rows to table
+            nutrients.forEach(nutrient => {
+                const percentage = Math.min(100, Math.round((nutrient.value / nutrient.daily) * 100));
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${nutrient.name}</td>
+                    <td class="nutrient-value">${nutrient.value} ${nutrient.unit}</td>
+                    <td>${nutrient.daily} ${nutrient.unit}</td>
+                    <td>
+                        <div class="nutrient-progress">
+                            <div class="nutrient-bar">
+                                <div class="nutrient-fill" style="width: ${percentage}%"></div>
+                            </div>
+                            <span>${percentage}%</span>
+                        </div>
+                    </td>
+                `;
+                nutritionTableBody.appendChild(row);
+            });
+        }
+        
+        function clearNutritionTable() {
+            nutritionTableBody.innerHTML = '';
+            photoAnalysisStatus.innerHTML = 'Click "Analyze with AI" to identify food items and nutrition information.';
+            photoAnalysisStatus.style.color = 'rgba(240, 237, 234, 0.8)';
+        }
+        
+        function addPhotoToFoodLog() {
+            showNotification('Food items added to your food log!', 'success');
+            addToScanHistory({
+                product_name: 'AI-Detected Meal',
+                brands: 'Multiple Items',
+                nutriments: {
+                    'energy-kcal_100g': 307,
+                    'proteins_100g': 11,
+                    'carbohydrates_100g': 21.6,
+                    'fat_100g': 21
+                }
+            }, 'PHOTO-' + Date.now());
+        }
+        
+        function savePhotoProduct() {
+            showNotification('Food analysis saved to your products!', 'success');
+        }
+        
+        // Product Data Functions
+        async function fetchProductData(barcode) {
+            updateStatus('scanning', 'Fetching product data...');
+            
+            try {
+                // Using Open Food Facts API
+                const response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
+                
+                if (response.data.status === 1) {
+                    const product = response.data.product;
+                    currentProduct = product;
+                    
+                    // Update UI with product data
+                    displayProductData(product, barcode);
+                    updateStatus('ready', 'Product data loaded');
+                    showNotification('Product found successfully!', 'success');
+                    
+                    // Add to recent scans
+                    addToScanHistory(product, barcode);
+                } else {
+                    // Product not found in database
+                    displayProductNotFound(barcode);
+                    updateStatus('error', 'Product not found in database');
+                    showNotification('Product not found. Please enter details manually.', 'warning');
+                }
+            } catch (error) {
+                console.error("Error fetching product:", error);
+                displayProductNotFound(barcode);
+                updateStatus('error', 'Network error');
+                showNotification('Failed to fetch product data. Please try again.', 'error');
+            }
+        }
+        
+        function displayProductData(product, barcode) {
+            // Basic info
+            productName.textContent = product.product_name || 'Unknown Product';
+            productBrand.textContent = product.brands || 'Unknown Brand';
+            productBarcode.textContent = barcode;
+            productDescription.textContent = product.generic_name || product.product_name || 'No description available';
+            
+            // Nutrition values
+            const nutrients = product.nutriments || {};
+            caloriesValue.textContent = nutrients['energy-kcal_100g'] ? 
+                Math.round(nutrients['energy-kcal_100g']) : '0';
+            proteinValue.textContent = nutrients['proteins_100g'] ? 
+                `${nutrients['proteins_100g'].toFixed(1)}g` : '0g';
+            carbsValue.textContent = nutrients['carbohydrates_100g'] ? 
+                `${nutrients['carbohydrates_100g'].toFixed(1)}g` : '0g';
+            fatValue.textContent = nutrients['fat_100g'] ? 
+                `${nutrients['fat_100g'].toFixed(1)}g` : '0g';
+            
+            // Detailed nutrition
+            let details = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">';
+            if (nutrients['sugars_100g']) details += `<div>Sugar: ${nutrients['sugars_100g'].toFixed(1)}g</div>`;
+            if (nutrients['fiber_100g']) details += `<div>Fiber: ${nutrients['fiber_100g'].toFixed(1)}g</div>`;
+            if (nutrients['sodium_100g']) details += `<div>Sodium: ${nutrients['sodium_100g'].toFixed(1)}g</div>`;
+            if (nutrients['salt_100g']) details += `<div>Salt: ${nutrients['salt_100g'].toFixed(1)}g</div>`;
+            details += '</div>';
+            nutritionDetails.innerHTML = details;
+            
+            // Product image
+            if (product.image_url) {
+                productImage.innerHTML = `<img src="${product.image_url}" alt="${product.product_name}" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\"fas fa-image\" style=\"font-size: 3rem; color: rgba(240, 237, 234, 0.3);\"></i>';">`;
+            }
+            
+            // Show product results
+            productResults.classList.add('active');
+            capturedPhotoArea.classList.remove('active');
+        }
+        
+        function displayProductNotFound(barcode) {
+            productName.textContent = 'Product Not Found';
+            productBrand.textContent = 'Unknown Brand';
+            productBarcode.textContent = barcode;
+            productDescription.textContent = 'This product was not found in our database. Please enter the details manually.';
+            
+            // Reset values
+            caloriesValue.textContent = '0';
+            proteinValue.textContent = '0g';
+            carbsValue.textContent = '0g';
+            fatValue.textContent = '0g';
+            nutritionDetails.textContent = 'No nutrition data available.';
+            productImage.innerHTML = '<i class="fas fa-question-circle" style="font-size: 3rem; color: rgba(240, 237, 234, 0.3);"></i>';
+            
+            // Show product results
+            productResults.classList.add('active');
+            capturedPhotoArea.classList.remove('active');
+        }
+        
+        // Utility Functions
+        function clearScanner() {
+            if (scanner) {
+                stopScanner();
+            }
+            stopPhotoCapture();
+            productResults.classList.remove('active');
+            capturedPhotoArea.classList.remove('active');
+            currentProduct = null;
+            capturedImageData = null;
+            updateStatus('ready', 'Scanner is ready');
+            clearNutritionTable();
+        }
+        
+        function uploadBarcode() {
+            // Create file input for barcode image upload
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            
+            fileInput.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    showNotification('Barcode image upload feature coming soon!', 'info');
+                }
+            };
+            
+            fileInput.click();
+        }
+        
+        // Scan History Functions
+        function addToScanHistory(product, barcode) {
+            const scan = {
+                id: Date.now(),
+                name: product.product_name || 'Unknown Product',
+                brand: product.brands || 'Unknown Brand',
+                barcode: barcode,
+                calories: product.nutriments ? (product.nutriments['energy-kcal_100g'] || 0) : 0,
+                protein: product.nutriments ? (product.nutriments['proteins_100g'] || 0) : 0,
+                carbs: product.nutriments ? (product.nutriments['carbohydrates_100g'] || 0) : 0,
+                fat: product.nutriments ? (product.nutriments['fat_100g'] || 0) : 0,
+                timestamp: new Date().toLocaleString(),
+                image: product.image_url
+            };
+            
+            // Add to beginning of array and limit to 10 items
+            scanHistory.unshift(scan);
+            if (scanHistory.length > 10) {
+                scanHistory.pop();
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('dishgennieScanHistory', JSON.stringify(scanHistory));
+            
+            // Update UI
+            updateScanHistory();
+        }
+        
+        function updateScanHistory() {
+            scansList.innerHTML = '';
+            
+            if (scanHistory.length === 0) {
+                scansList.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: rgba(240, 237, 234, 0.5);">
+                        <i class="fas fa-history" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>No recent scans yet</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            scanHistory.forEach(scan => {
+                const scanItem = document.createElement('div');
+                scanItem.className = 'scan-item';
+                scanItem.onclick = () => {
+                    if (scan.barcode.startsWith('PHOTO-')) {
+                        showNotification('This is a photo analysis result.', 'info');
+                    } else {
+                        fetchProductData(scan.barcode);
+                        showNotification(`Loading ${scan.name}...`);
+                    }
+                };
+                
+                scanItem.innerHTML = `
+                    <div class="scan-icon">
+                        <i class="fas fa-${scan.barcode.startsWith('PHOTO-') ? 'camera' : 'barcode'}"></i>
+                    </div>
+                    <div class="scan-info">
+                        <div class="scan-name">${scan.name}</div>
+                        <div class="scan-details">${scan.brand} • ${scan.timestamp}</div>
+                    </div>
+                    <div class="scan-calories">${Math.round(scan.calories)} cal</div>
+                `;
+                
+                scansList.appendChild(scanItem);
+            });
+        }
+        
+        function clearScanHistory() {
+            if (confirm('Are you sure you want to clear your scan history?')) {
+                scanHistory = [];
+                localStorage.removeItem('dishgennieScanHistory');
+                updateScanHistory();
+                showNotification('Scan history cleared', 'info');
+            }
+        }
+        
+        // Status Functions
+        function updateStatus(state, text) {
+            statusIndicator.className = 'status-indicator';
+            statusIndicator.classList.add(state);
+            statusText.textContent = text;
+        }
+        
+        // Notification Function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.padding = '1rem 1.5rem';
+            notification.style.background = type === 'success' ? 
+                'linear-gradient(135deg, var(--success), #2E7D32)' : 
+                type === 'error' ? 
+                'linear-gradient(135deg, var(--error), #C62828)' :
+                type === 'warning' ?
+                'linear-gradient(135deg, var(--warning), #EF6C00)' :
+                'linear-gradient(135deg, var(--accent), var(--secondary))';
+            notification.style.color = 'white';
+            notification.style.borderRadius = '8px';
+            notification.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+            notification.style.zIndex = '9999';
+            notification.style.transform = 'translateX(100%)';
+            notification.style.transition = 'transform 0.3s ease';
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i> 
+                ${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 10);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Demo data for testing
+        function loadDemoData() {
+            if (scanHistory.length === 0) {
+                const demoScans = [
+                    {
+                        id: 1,
+                        name: 'Greek Yogurt',
+                        brand: 'Chobani',
+                        barcode: '123456789012',
+                        calories: 120,
+                        protein: 15,
+                        carbs: 8,
+                        fat: 3,
+                        timestamp: 'Today, 10:30 AM'
+                    },
+                    {
+                        id: 2,
+                        name: 'Avocado Toast',
+                        brand: 'AI Detected',
+                        barcode: 'PHOTO-001',
+                        calories: 307,
+                        protein: 11,
+                        carbs: 22,
+                        fat: 21,
+                        timestamp: 'Yesterday, 3:15 PM'
+                    },
+                    {
+                        id: 3,
+                        name: 'Protein Bar',
+                        brand: 'Quest',
+                        barcode: '345678901234',
+                        calories: 210,
+                        protein: 21,
+                        carbs: 4,
+                        fat: 9,
+                        timestamp: '2 days ago, 2:00 PM'
+                    }
+                ];
+                
+                scanHistory = demoScans;
+                localStorage.setItem('dishgennieScanHistory', JSON.stringify(scanHistory));
+                updateScanHistory();
+            }
+        }
+    </script>
+</body>
+</html>

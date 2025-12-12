@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | DishGennie</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --text: #f0edea;
+            --background: #120d09;
+            --primary: #debd9d;
+            --secondary: #8c541c;
+            --accent: #eb8c2d;
+            --transition: all 0.3s ease;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            --radius: 12px;
+            --card-bg: #1c1611;
+            --border: rgba(140, 84, 28, 0.3);
+            --light-bg: #241c15;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: rgba(18, 13, 9, 0.95);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .navbar-brand i {
+            color: var(--accent);
+        }
+        
+        .nav-link {
+            color: var(--text) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 30px;
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary) !important;
+            background-color: rgba(222, 189, 157, 0.1);
+        }
+        
+        /* Hero Section */
+        .contact-hero {
+            padding: 120px 0 60px;
+            background: linear-gradient(rgba(18, 13, 9, 0.9), rgba(18, 13, 9, 0.95));
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 3.2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(240, 237, 234, 0.9);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+        
+        /* Main Content */
+        .contact-section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-size: 2.8rem;
+            font-weight: 800;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: rgba(240, 237, 234, 0.8);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 3.5rem;
+        }
+        
+        /* Contact Cards - FIXED ALIGNMENT */
+        .contact-cards-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            height: 100%;
+        }
+        
+        .contact-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2rem;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: rgba(235, 140, 45, 0.5);
+        }
+        
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--background);
+            font-size: 1.5rem;
+        }
+        
+        .contact-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+        
+        .contact-detail {
+            color: rgba(240, 237, 234, 0.8);
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+        
+        .contact-link {
+            color: var(--accent);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+            margin-top: auto;
+        }
+        
+        .contact-link:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        /* Contact Form - FIXED ALIGNMENT */
+        .contact-form-container {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            border: 1px solid var(--border);
+            height: 100%;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .form-control {
+            background-color: rgba(28, 22, 17, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            padding: 0.75rem 1rem;
+            width: 100%;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(235, 140, 45, 0.1);
+        }
+        
+        .form-control::placeholder {
+            color: rgba(240, 237, 234, 0.5);
+        }
+        
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23eb8c2d' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px;
+            padding-right: 2.5rem;
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .btn-send {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            border: none;
+            color: var(--background);
+            padding: 0.9rem 2.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .btn-send:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(235, 140, 45, 0.3);
+        }
+        
+        /* FAQ Section - FIXED ALIGNMENT */
+        .faq-section {
+            padding: 80px 0;
+            background-color: var(--light-bg);
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        
+        .faq-card:hover {
+            border-color: rgba(235, 140, 45, 0.5);
+        }
+        
+        .faq-question {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            color: rgba(240, 237, 234, 0.8);
+            font-size: 1.05rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-card.active .faq-answer {
+            max-height: 300px;
+            margin-top: 1rem;
+        }
+        
+        .faq-card.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+        
+        /* Team Section - FIXED ALIGNMENT */
+        .team-section {
+            padding: 80px 0;
+        }
+        
+        .team-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: rgba(235, 140, 45, 0.5);
+        }
+        
+        .team-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--background);
+            font-weight: 700;
+        }
+        
+        .team-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .team-role {
+            color: var(--accent);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .team-bio {
+            color: rgba(240, 237, 234, 0.8);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            flex: 1;
+        }
+        
+        /* Map Section */
+        .map-section {
+            padding: 80px 0;
+            background-color: var(--light-bg);
+        }
+        
+        .map-container {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 3rem;
+            border: 1px solid var(--border);
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .map-placeholder {
+            text-align: center;
+            color: rgba(240, 237, 234, 0.6);
+        }
+        
+        .map-placeholder i {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--card-bg);
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-brand i {
+            color: var(--accent);
+        }
+        
+        .footer-description {
+            color: rgba(240, 237, 234, 0.7);
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-heading {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: rgba(240, 237, 234, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 1.5rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background-color: rgba(140, 84, 28, 0.2);
+            color: var(--accent);
+            border-radius: 50%;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background-color: var(--accent);
+            color: var(--background);
+            transform: translateY(-5px);
+        }
+        
+        .footer-bottom {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: rgba(240, 237, 234, 0.6);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .contact-hero {
+                padding: 100px 0 50px;
+            }
+            
+            .contact-section, .faq-section, .team-section, .map-section {
+                padding: 60px 0;
+            }
+            
+            .contact-form-container {
+                margin-top: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 1.9rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 2.5rem;
+            }
+            
+            .contact-card, .contact-form-container, .faq-card, .team-card {
+                padding: 1.5rem;
+            }
+            
+            .contact-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+                margin-bottom: 1.2rem;
+            }
+            
+            .contact-title {
+                font-size: 1.3rem;
+            }
+            
+            .contact-detail {
+                font-size: 1rem;
+            }
+            
+            .map-container {
+                padding: 2rem;
+                height: 350px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 1.9rem;
+                margin-bottom: 1rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
+                margin-bottom: 1rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1rem;
+                margin-bottom: 2rem;
+            }
+            
+            .contact-hero {
+                padding: 80px 0 40px;
+            }
+            
+            .contact-section, .faq-section, .team-section, .map-section {
+                padding: 50px 0;
+            }
+            
+            .btn-send {
+                width: 100%;
+            }
+            
+            .footer {
+                padding: 3rem 0 1.5rem;
+            }
+            
+            .footer-heading {
+                font-size: 1.2rem;
+            }
+            
+            .team-avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+            
+            .map-container {
+                height: 300px;
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .hero-title {
+                font-size: 1.7rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .contact-card, .contact-form-container {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-utensils"></i> DishGennie
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about/">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/service/">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/contactus/">Contact</a>
+                    </li>
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <a class="btn btn-send" href="/signup/">Get Started</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="contact-hero">
+        <div class="container">
+            <h1 class="hero-title">Get In Touch With DishGennie</h1>
+            <p class="hero-subtitle">
+                Have questions, feedback, or partnership ideas? We'd love to hear from you. Our team is here to help you with your meal planning journey.
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">
+                Reach out to us through any of these channels or fill out the contact form below.
+            </p>
+            
+            <div class="row g-4 align-items-stretch">
+                <!-- Contact Information -->
+                <div class="col-lg-4">
+                    <div class="contact-cards-container">
+                        <div class="contact-card">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <h3 class="contact-title">Email Us</h3>
+                            <p class="contact-detail">For general inquiries and support</p>
+                            <a href="mailto:aditya.work8957@gmail.com" class="contact-link">aditya.work8957@gmail.com</a>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <h3 class="contact-title">Call Us</h3>
+                            <p class="contact-detail">Available Monday to Friday, 9AM-6PM</p>
+                            <a href="tel:+918957170537" class="contact-link">+91 89571 70537</a>
+                        </div>
+                        
+                        <div class="contact-card">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <h3 class="contact-title">Visit Us</h3>
+                            <p class="contact-detail">Based in India</p>
+                            <p class="contact-detail">Remote team working worldwide</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="col-lg-8">
+                    <div class="contact-form-container">
+                        <h3 style="color: var(--primary); margin-bottom: 2rem;">Send Us a Message</h3>
+                        <form id="contactForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="firstName" class="form-label">First Name *</label>
+                                        <input type="text" class="form-control" id="firstName" placeholder="Enter your first name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="lastName" class="form-label">Last Name *</label>
+                                        <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email" class="form-label">Email Address *</label>
+                                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="inquiryType" class="form-label">Inquiry Type *</label>
+                                <select class="form-control" id="inquiryType" required>
+                                    <option value="" disabled selected>Select inquiry type</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="feedback">Product Feedback</option>
+                                    <option value="partnership">Partnership/API</option>
+                                    <option value="billing">Billing Issue</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subject" class="form-label">Subject *</label>
+                                <input type="text" class="form-control" id="subject" placeholder="Enter message subject" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message" class="form-label">Message *</label>
+                                <textarea class="form-control" id="message" rows="5" placeholder="Type your message here..." required></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="newsletter" checked>
+                                    <label class="form-check-label" for="newsletter" style="color: rgba(240, 237, 234, 0.8);">
+                                        Subscribe to our newsletter for updates and cooking tips
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-send" id="submitBtn">
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">
+                Find quick answers to common questions about DishGennie and our services.
+            </p>
+            
+            <div class="faq-container">
+                <div class="faq-card active">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How does DishGennie's AI recipe generator work?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Our AI analyzes thousands of recipes, your dietary preferences, and available ingredients to create personalized meal suggestions. The more you use it, the better it understands your tastes and cooking style.
+                    </div>
+                </div>
+                
+                <div class="faq-card">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Is there a free version of DishGennie?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Yes! We offer a free tier with basic meal planning and recipe generation. For advanced features like nutritional analysis, shopping list automation, and premium recipes, check out our Pro and Family plans.
+                    </div>
+                </div>
+                
+                <div class="faq-card">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        How accurate is the nutritional information?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Our nutritional data comes from verified sources and is calculated based on standard ingredient measurements. For precise dietary needs, we recommend consulting with a nutritionist, but our data is accurate for general meal planning.
+                    </div>
+                </div>
+                
+                <div class="faq-card">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        Can I share my meal plans with family members?
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Absolutely! With our Family plan, you can share meal plans, shopping lists, and recipes with up to 6 family members. Everyone can contribute to the meal planning process.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <h2 class="section-title">Our Support Team</h2>
+            <p class="section-subtitle">
+                Meet the dedicated team ready to help you with your meal planning needs.
+            </p>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="team-card">
+                        <div class="team-avatar">A</div>
+                        <h3 class="team-name">Aditya Sharma</h3>
+                        <p class="team-role">Founder & CEO</p>
+                        <p class="team-bio">Passionate about making cooking accessible to everyone. Leads product vision and user experience.</p>
+                        <a href="mailto:aditya.work8957@gmail.com" class="contact-link">aditya.work8957@gmail.com</a>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="team-card">
+                        <div class="team-avatar">S</div>
+                        <h3 class="team-name">Sarah Johnson</h3>
+                        <p class="team-role">Head of Nutrition</p>
+                        <p class="team-bio">Certified nutritionist with 10+ years experience. Ensures all our recipes are healthy and balanced.</p>
+                        <a href="mailto:sarah@dishgennie.com" class="contact-link">sarah@dishgennie.com</a>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="team-card">
+                        <div class="team-avatar">M</div>
+                        <h3 class="team-name">Michael Chen</h3>
+                        <p class="team-role">Customer Support Lead</p>
+                        <p class="team-bio">Manages our support team and ensures every user query gets a prompt and helpful response.</p>
+                        <a href="mailto:support@dishgennie.com" class="contact-link">support@dishgennie.com</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section">
+        <div class="container">
+            <h2 class="section-title">Our Location</h2>
+            <p class="section-subtitle">
+                While we're a remote-first company, here's where our main operations are based.
+            </p>
+            
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">India Headquarters</h3>
+                    <p style="color: rgba(240, 237, 234, 0.8); margin-bottom: 0.5rem;">Remote-First Company</p>
+                    <p style="color: rgba(240, 237, 234, 0.8);">Serving customers worldwide</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-brand">
+                        <i class="fas fa-utensils"></i> DishGennie
+                    </div>
+                    <p class="footer-description">
+                        Your personal AI-powered meal planning companion. Making cooking fun, easy, and personalized for everyone.
+                    </p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="footer-heading">Company</h5>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about/">About Us</a></li>
+                        <li><a href="/service/">Services</a></li>
+                        <li><a href="/contactus/">Contact</a></li>
+                        <li><a href="/careers/">Careers</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-heading">Features</h5>
+                    <ul class="footer-links">
+                        <li><a href="/meal-planner/">Meal Planner</a></li>
+                        <li><a href="/recipes/">Recipe Generator</a></li>
+                        <li><a href="/nutrition/">Nutrition Tracker</a></li>
+                        <li><a href="/shopping/">Shopping Lists</a></li>
+                        <li><a href="/academy/">Cooking Academy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-heading">Resources</h5>
+                    <ul class="footer-links">
+                        <li><a href="/blog/">Blog</a></li>
+                        <li><a href="/help/">Help Center</a></li>
+                        <li><a href="/privacy/">Privacy Policy</a></li>
+                        <li><a href="/terms/">Terms of Service</a></li>
+                        <li><a href="/cookies/">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 DishGennie. All Rights Reserved. Made with <i class="fas fa-heart" style="color: var(--accent);"></i> for food lovers everywhere.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // FAQ Toggle Functionality
+        function toggleFAQ(element) {
+            const faqCard = element.parentElement;
+            faqCard.classList.toggle('active');
+        }
+        
+        // Contact Form Submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show sending state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                // Get form values (in real app, send to backend)
+                const firstName = document.getElementById('firstName').value;
+                const email = document.getElementById('email').value;
+                
+                // Show success message
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+                submitBtn.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)';
+                
+                // Reset form
+                document.getElementById('contactForm').reset();
+                
+                // Show success alert
+                alert(`Thank you ${firstName}! Your message has been sent successfully. We'll get back to you at ${email} within 24 hours.`);
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    submitBtn.style.background = '';
+                }, 3000);
+            }, 1500);
+        });
+        
+        // Auto-fill phone number with country code
+        document.getElementById('phone').addEventListener('focus', function() {
+            if (!this.value) {
+                this.value = '+91 ';
+            }
+        });
+        
+        // Initialize with first FAQ open
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-open first FAQ
+            const firstFaq = document.querySelector('.faq-card');
+            if (firstFaq) {
+                firstFaq.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
